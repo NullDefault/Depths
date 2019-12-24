@@ -1,6 +1,10 @@
 import tcod as libtcod
+
 from source import input_master, entity, render_functions
+from source.entity import get_blocking_entities_at_location
+from source.game_states import GameStates
 from source.map_engine.game_map import GameMap
+
 
 def main():
     screen_width = 80
@@ -17,6 +21,8 @@ def main():
     fov_radius = 10
     fov_recompute = True
 
+    max_monsters_per_room = 3
+
     colors = {
         'dark_wall': libtcod.Color(0, 0, 100),
         'dark_ground': libtcod.Color(50, 50, 150),
@@ -24,22 +30,24 @@ def main():
         'light_ground': libtcod.Color(200, 180, 50)
     }
 
-    player = entity.Entity(int(screen_width / 2), int(screen_height / 2), '@', libtcod.white)
-    npc = entity.Entity(int(screen_width / 3), int(screen_height / 3), 'G', libtcod.red)
-    entities = [npc, player]
+    player = entity.Entity(0, 0, '@', libtcod.white, "Player", blocks=True)
+    entities = [player]
 
-    libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+    libtcod.console_set_custom_font('assets/arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
 
     libtcod.console_init_root(screen_width, screen_height, 'untitled roguelike', False)
 
     console = libtcod.console_new(screen_width, screen_height)
 
     game_map = GameMap(map_width, map_height)
-    game_map.generate_map(max_rooms, min_room_size, max_room_size, map_width, map_height, player)
+    game_map.generate_map(max_rooms, min_room_size, max_room_size, map_width, map_height,
+                          player, entities, max_monsters_per_room)
     fov_map = render_functions.initialize_fov(game_map)
 
     key = libtcod.Key()
     mouse = libtcod.Mouse()
+
+    game_state = GameStates.PLAYERS_TURN
 
     while not libtcod.console_is_window_closed():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
@@ -60,17 +68,33 @@ def main():
         end_game = action.get('exit')
         full_screen = action.get('fullscreen')
 
-        if move:
+        if move and game_state == GameStates.PLAYERS_TURN:
             dx, dy = move
-            if not game_map.is_blocked(player.x + dx, player.y + dy):
-                player.move(dx, dy)
-                fov_recompute = True
+            destination_x = player.x + dx
+            destination_y = player.y + dy
+
+            if not game_map.is_blocked(destination_x, destination_y):
+                target = get_blocking_entities_at_location(entities, destination_x, destination_y)
+                if target:
+                    print("You kick the " + target.name + " in the groin, much to its annoyance!")
+                else:
+                    player.move(dx, dy)
+                    fov_recompute = True
+
+            game_state = GameStates.ENEMY_TURN
 
         if end_game:
             return True
 
         if full_screen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+
+        if game_state == GameStates.ENEMY_TURN:
+            for instance in entities:
+                if instance != player:
+                    print('The ' + instance.name + ' ponders the meaning of its existence.')
+
+            game_state = GameStates.PLAYERS_TURN
 
 
 if __name__ == '__main__':

@@ -1,5 +1,7 @@
+import tcod as libtcod
 from source.map_engine.tile import Tile
 from source.map_engine.rect import Rect
+from source.entity import Entity
 from random import randint
 
 
@@ -14,7 +16,8 @@ class GameMap:
 
         return tiles
 
-    def generate_map(self, max_rooms, min_room_size, max_room_size, map_width, map_height, player):
+    def generate_map(self, max_rooms, min_room_size, max_room_size, map_width, map_height,
+                     player, entities, max_monsters_per_room):
         rooms = []
         num_rooms = 0
 
@@ -48,9 +51,23 @@ class GameMap:
                         self.create_tunnel_v(prev_y, new_y, prev_x)
                         self.create_tunnel_h(prev_x, new_x, new_y)
 
+                self.place_entities(new_room, entities, max_monsters_per_room)
                 rooms.append(new_room)
                 num_rooms += 1
 
+    def place_entities(self, room, entities, max_monsters_per_room):
+        number_of_monsters = randint(0, max_monsters_per_room)
+
+        for i in range(number_of_monsters):
+            x = randint(room.x1 + 1, room.x2 - 1)
+            y = randint(room.y1 + 1, room.y2 - 1)
+
+            if not any([entity for entity in entities if entity.x == x and entity.y == y]):
+                if randint(0, 100) < 80:
+                    monster = Entity(x, y, 'o', libtcod.desaturated_green, "Orc", blocks=True)
+                else:
+                    monster = Entity(x, y, 'T', libtcod.darker_green, "Troll", blocks=True)
+                entities.append(monster)
 
     def generate_room(self, room):
         for x in range(room.x1 + 1, room.x2):
