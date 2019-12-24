@@ -1,8 +1,6 @@
 import tcod as libtcod
 from source import input_master, entity, render_functions
 from source.map_engine.game_map import GameMap
-from source.render_functions import render_all, clear_all
-
 
 def main():
     screen_width = 80
@@ -14,9 +12,16 @@ def main():
     min_room_size = 6
     max_rooms = 30
 
+    fov_algorithm = 0
+    fov_light_walls = True
+    fov_radius = 10
+    fov_recompute = True
+
     colors = {
         'dark_wall': libtcod.Color(0, 0, 100),
-        'dark_ground': libtcod.Color(50, 50, 150)
+        'dark_ground': libtcod.Color(50, 50, 150),
+        'light_wall': libtcod.Color(130, 110, 50),
+        'light_ground': libtcod.Color(200, 180, 50)
     }
 
     player = entity.Entity(int(screen_width / 2), int(screen_height / 2), '@', libtcod.white)
@@ -31,6 +36,7 @@ def main():
 
     game_map = GameMap(map_width, map_height)
     game_map.generate_map(max_rooms, min_room_size, max_room_size, map_width, map_height, player)
+    fov_map = render_functions.initialize_fov(game_map)
 
     key = libtcod.Key()
     mouse = libtcod.Mouse()
@@ -38,10 +44,15 @@ def main():
     while not libtcod.console_is_window_closed():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
 
-        render_all(console, entities, game_map, screen_width, screen_height, colors)
+        if fov_recompute:
+            render_functions.recompute_fov(fov_map, player.x, player.y, fov_radius, fov_light_walls, fov_algorithm)
+
+        render_functions.render_all(console, entities, game_map,
+                                    fov_map, fov_recompute, screen_width, screen_height, colors)
+        fov_recompute = False
         libtcod.console_flush()
 
-        clear_all(console, entities)
+        render_functions.clear_all(console, entities)
 
         action = input_master.handle_keys(key)
 
@@ -53,6 +64,7 @@ def main():
             dx, dy = move
             if not game_map.is_blocked(player.x + dx, player.y + dy):
                 player.move(dx, dy)
+                fov_recompute = True
 
         if end_game:
             return True
