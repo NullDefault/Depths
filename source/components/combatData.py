@@ -1,3 +1,7 @@
+from source.game_messages import Message
+import tcod as libtcod
+
+
 class CombatData:
     def __init__(self, hp, defense, attack):
         self.max_hp = hp
@@ -9,12 +13,12 @@ class CombatData:
         results = []
         damage = self.attack - target.combat_data.defense
         if damage > 0:
-            results.append({'message': '{0} attacks {1} for {2} hit points.'.format(
-                self.owner.name.capitalize(), target.name, str(damage))})
+            results.append({'message': Message('{0} attacks {1} for {2} hit points.'.format(
+                self.owner.name.capitalize(), target.name, str(damage)), libtcod.white)})
             results.extend(target.combat_data.take_damage(damage))
         else:
-            results.append({'message': '{0} attacks {1} but does no damage.'.format(
-                self.owner.name.capitalize(), target.name)})
+            results.append({'message': Message('{0} attacks {1} but does no damage.'.format(
+                self.owner.name.capitalize(), target.name), libtcod.white)})
 
         return results
 
