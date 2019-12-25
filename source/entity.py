@@ -13,7 +13,8 @@ def get_blocking_entities_at_location(entities, destination_x, destination_y):
 
 class Entity:
 
-    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, combat_data=None, ai=None):
+    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE,
+                 combat_data=None, ai=None, item=None, inventory=None):
         self.x = x
         self.y = y
         self.char = char
@@ -23,12 +24,20 @@ class Entity:
         self.render_order = render_order
         self.combat_data = combat_data
         self.ai = ai
+        self.item = item
+        self.inventory = inventory
 
         if self.combat_data:
             self.combat_data.owner = self
 
         if self.ai:
             self.ai.owner = self
+
+        if self.item:
+            self.item.owner = self
+
+        if self.inventory:
+            self.inventory.owner = self
 
     def move(self, dx, dy):
         self.x += dx

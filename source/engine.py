@@ -1,8 +1,9 @@
 import tcod as libtcod
 
-from source import input_master, entity, render_functions
-from source.entity import get_blocking_entities_at_location
-from source.game_messages import MessageLog
+from source import input_master, render_functions
+from source.components.inventory import Inventory
+from source.entity import get_blocking_entities_at_location, Entity
+from source.game_messages import MessageLog, Message
 from source.game_states import GameStates
 from source.map_engine.game_map import GameMap
 from source.components.combatData import CombatData
@@ -12,9 +13,9 @@ from source.render_functions import RenderOrder
 
 def main():
     screen_width = 80
-    screen_height = 50
+    screen_height = 60
     map_width = 80
-    map_height = 43
+    map_height = 53
 
     bar_width = 20
     panel_height = 7
@@ -34,6 +35,7 @@ def main():
     fov_recompute = True
 
     max_monsters_per_room = 3
+    max_items_per_room = 2
 
     colors = {
         'dark_wall': libtcod.Color(0, 0, 100),
@@ -41,9 +43,10 @@ def main():
         'light_wall': libtcod.Color(130, 110, 50),
         'light_ground': libtcod.Color(200, 180, 50)
     }
-    player_stats = CombatData(hp=10, defense=2, attack=5)
-    player = entity.Entity(0, 0, '@', libtcod.white, "Player", blocks=True,
-                           render_order=RenderOrder.ACTOR, combat_data=player_stats)
+    player_stats = CombatData(hp=30, defense=2, attack=5)
+    player_starting_inventory = Inventory(10)
+    player = Entity(0, 0, '@', libtcod.white, "Player", blocks=True, render_order=RenderOrder.ACTOR,
+                           combat_data=player_stats, inventory=player_starting_inventory)
     entities = [player]
 
     libtcod.console_set_custom_font('assets/arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
@@ -55,7 +58,7 @@ def main():
 
     game_map = GameMap(map_width, map_height)
     game_map.generate_map(max_rooms, min_room_size, max_room_size, map_width, map_height,
-                          player, entities, max_monsters_per_room)
+                          player, entities, max_monsters_per_room, max_items_per_room)
     fov_map = render_functions.initialize_fov(game_map)
 
     message_log = MessageLog(message_x, message_width, message_height)
@@ -64,6 +67,7 @@ def main():
     mouse = libtcod.Mouse()
 
     game_state = GameStates.PLAYERS_TURN
+    previous_game_state = game_state
 
     while not libtcod.console_is_window_closed():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
@@ -72,17 +76,22 @@ def main():
             render_functions.recompute_fov(fov_map, player.x, player.y, fov_radius, fov_light_walls, fov_algorithm)
 
         render_functions.render_all(console, panel, entities, player, game_map, fov_map, fov_recompute, message_log,
-                                    screen_width, screen_height, bar_width, panel_height, panel_y, mouse, colors)
+                                    screen_width, screen_height, bar_width, panel_height, panel_y, mouse,
+                                    colors, game_state)
         fov_recompute = False
         libtcod.console_flush()
 
         render_functions.clear_all(console, entities)
 
-        action = input_master.handle_keys(key)
+        action = input_master.handle_keys(key, game_state)
 
         move = action.get('move')
-        end_game = action.get('exit')
         full_screen = action.get('fullscreen')
+        pickup = action.get('pickup')
+        show_inventory = action.get('show_inventory')
+        drop_inventory = action.get('drop_inventory')
+        inventory_index = action.get('inventory_index')
+        end_game = action.get('exit')
 
         player_turn_results = []
 
@@ -102,8 +111,38 @@ def main():
 
             game_state = GameStates.ENEMY_TURN
 
+        elif pickup and game_state == GameStates.PLAYERS_TURN:
+            for entity in entities:
+                if entity.item and entity.x == player.x and entity.y == player.y:
+                    pickup_results = player.inventory.add_item(entity)
+                    player_turn_results.extend(pickup_results)
+
+                    break
+            else:
+                message_log.add_message(Message('There is nothing here to pick up.', libtcod.yellow))
+
+        if show_inventory:
+            previous_game_state = game_state
+            game_state = GameStates.SHOW_INVENTORY
+
+        if drop_inventory:
+            previous_game_state = game_state
+            game_state = GameStates.DROP_INVENTORY
+
+        if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < len(
+                player.inventory.items):
+            item = player.inventory.items[inventory_index]
+
+            if game_state == GameStates.SHOW_INVENTORY:
+                player_turn_results.extend(player.inventory.use(item))
+            elif game_state == GameStates.DROP_INVENTORY:
+                player_turn_results.extend(player.inventory.drop_item(item))
+
         if end_game:
-            return True
+            if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
+                game_state = previous_game_state
+            else:
+                return True
 
         if full_screen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
@@ -111,6 +150,9 @@ def main():
         for player_turn_result in player_turn_results:
             message = player_turn_result.get('message')
             dead_entity = player_turn_result.get('dead')
+            item_added = player_turn_result.get('item_added')
+            item_consumed = player_turn_result.get('consumed')
+            item_dropped = player_turn_result.get('item_dropped')
 
             if message:
                 message_log.add_message(message)
@@ -122,6 +164,18 @@ def main():
                     message = kill_monster(dead_entity)
 
                 message_log.add_message(message)
+
+            if item_added:
+                entities.remove(item_added)
+                game_state = GameStates.ENEMY_TURN
+
+            if item_consumed:
+                game_state = GameStates.ENEMY_TURN
+
+            if item_dropped:
+                entities.append(item_dropped)
+
+                game_state = GameStates.ENEMY_TURN
 
         if game_state == GameStates.ENEMY_TURN:
             for instance in entities:

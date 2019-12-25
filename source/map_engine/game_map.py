@@ -1,4 +1,7 @@
 import tcod as libtcod
+
+from source.components.item import Item
+from source.item_functions import heal
 from source.map_engine.tile import Tile
 from source.map_engine.rect import Rect
 from source.entity import Entity
@@ -20,7 +23,7 @@ class GameMap:
         return tiles
 
     def generate_map(self, max_rooms, min_room_size, max_room_size, map_width, map_height,
-                     player, entities, max_monsters_per_room):
+                     player, entities, max_monsters_per_room, max_items_per_room):
         rooms = []
         num_rooms = 0
 
@@ -54,12 +57,13 @@ class GameMap:
                         self.create_tunnel_v(prev_y, new_y, prev_x)
                         self.create_tunnel_h(prev_x, new_x, new_y)
 
-                self.place_entities(new_room, entities, max_monsters_per_room)
+                self.place_entities(new_room, entities, max_monsters_per_room, max_items_per_room)
                 rooms.append(new_room)
                 num_rooms += 1
 
-    def place_entities(self, room, entities, max_monsters_per_room):
+    def place_entities(self, room, entities, max_monsters_per_room, max_items_per_room):
         number_of_monsters = randint(0, max_monsters_per_room)
+        number_of_items = randint(0, max_items_per_room)
 
         for i in range(number_of_monsters):
             x = randint(room.x1 + 1, room.x2 - 1)
@@ -81,6 +85,17 @@ class GameMap:
                                      render_order=RenderOrder.ACTOR, combat_data=fighter_component, ai=ai_component)
 
                 entities.append(monster)
+
+        for i in range(number_of_items):
+            x = randint(room.x1 + 1, room.x2 - 1)
+            y = randint(room.y1 + 1, room.y2 - 1)
+
+            if not any([entity for entity in entities if entity.x == x and entity.y == y]):
+                item_component = Item(use_function=heal, amount=4)
+                item = Entity(x, y, '!', libtcod.violet, 'Healing Potion', render_order=RenderOrder.ITEM,
+                              item=item_component)
+
+                entities.append(item)
 
     def generate_room(self, room):
         for x in range(room.x1 + 1, room.x2):

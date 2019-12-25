@@ -1,6 +1,9 @@
 import tcod as libtcod
 from enum import Enum
 
+from source.game_states import GameStates
+from source.menus import inventory_menu
+
 
 class RenderOrder(Enum):
     CORPSE = 1
@@ -34,7 +37,7 @@ def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_c
 
 
 def render_all(console, panel, entities, player, game_map, fov_map, fov_recompute, message_log,
-               screen_width, screen_height, bar_width, bar_height, bar_y, mouse, colors):
+               screen_width, screen_height, bar_width, bar_height, bar_y, mouse, colors, game_state):
     if fov_recompute:
         for y in range(game_map.height):
             for x in range(game_map.width):
@@ -79,7 +82,15 @@ def render_all(console, panel, entities, player, game_map, fov_map, fov_recomput
     libtcod.console_print_ex(panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT,
                              get_names_under_mouse(mouse, entities, fov_map))
 
-    libtcod.console_blit(panel, 0,0, screen_width, bar_height, 0, 0, bar_y)
+    libtcod.console_blit(panel, 0, 0, screen_width, bar_height, 0, 0, bar_y)
+
+    if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
+        if game_state == GameStates.SHOW_INVENTORY:
+            inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
+        else:
+            inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
+
+        inventory_menu(console, inventory_title, player.inventory, 50, screen_width, screen_height)
 
 
 def initialize_fov(game_map):
