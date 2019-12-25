@@ -4,6 +4,9 @@ from source import input_master, entity, render_functions
 from source.entity import get_blocking_entities_at_location
 from source.game_states import GameStates
 from source.map_engine.game_map import GameMap
+from source.components.combatData import CombatData
+from source.death_functions import kill_monster, kill_player
+from source.render_functions import RenderOrder
 
 
 def main():
@@ -29,8 +32,8 @@ def main():
         'light_wall': libtcod.Color(130, 110, 50),
         'light_ground': libtcod.Color(200, 180, 50)
     }
-
-    player = entity.Entity(0, 0, '@', libtcod.white, "Player", blocks=True)
+    player_stats = CombatData(hp=10, defense=2, attack=5)
+    player = entity.Entity(0, 0, '@', libtcod.white, "Player", blocks=True, render_order=RenderOrder.ACTOR, combat_data=player_stats)
     entities = [player]
 
     libtcod.console_set_custom_font('assets/arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
@@ -55,7 +58,7 @@ def main():
         if fov_recompute:
             render_functions.recompute_fov(fov_map, player.x, player.y, fov_radius, fov_light_walls, fov_algorithm)
 
-        render_functions.render_all(console, entities, game_map,
+        render_functions.render_all(console, entities, player, game_map,
                                     fov_map, fov_recompute, screen_width, screen_height, colors)
         fov_recompute = False
         libtcod.console_flush()
@@ -68,6 +71,8 @@ def main():
         end_game = action.get('exit')
         full_screen = action.get('fullscreen')
 
+        player_turn_results = []
+
         if move and game_state == GameStates.PLAYERS_TURN:
             dx, dy = move
             destination_x = player.x + dx
@@ -76,7 +81,8 @@ def main():
             if not game_map.is_blocked(destination_x, destination_y):
                 target = get_blocking_entities_at_location(entities, destination_x, destination_y)
                 if target:
-                    print("You kick the " + target.name + " in the groin, much to its annoyance!")
+                    attack_results = player.combat_data.fight(target)
+                    player_turn_results.extend(attack_results)
                 else:
                     player.move(dx, dy)
                     fov_recompute = True
@@ -89,12 +95,49 @@ def main():
         if full_screen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
 
+        for player_turn_result in player_turn_results:
+            message = player_turn_result.get('message')
+            dead_entity = player_turn_result.get('dead')
+
+            if message:
+                print(message)
+
+            if dead_entity:
+                if dead_entity == player:
+                    message, game_state = kill_player(dead_entity)
+                else:
+                    message = kill_monster(dead_entity)
+
+                print(message)
+
         if game_state == GameStates.ENEMY_TURN:
             for instance in entities:
-                if instance != player:
-                    print('The ' + instance.name + ' ponders the meaning of its existence.')
+                if instance.ai:
+                    enemy_turn_results = instance.ai.take_turn(player, fov_map, game_map, entities)
 
-            game_state = GameStates.PLAYERS_TURN
+                    for enemy_turn_result in enemy_turn_results:
+                        message = enemy_turn_result.get('message')
+                        dead_entity = enemy_turn_result.get('dead')
+
+                        if message:
+                            print(message)
+
+                        if dead_entity:
+
+                            if dead_entity == player:
+                                message, game_state = kill_player(dead_entity)
+                            else:
+                                message = kill_monster(dead_entity)
+
+                            print(message)
+
+                            if game_state == GameStates.PLAYER_DEAD:
+                                break
+
+                    if game_state == GameStates.PLAYER_DEAD:
+                        break
+            else:
+                game_state = GameStates.PLAYERS_TURN
 
 
 if __name__ == '__main__':

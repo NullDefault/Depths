@@ -3,6 +3,9 @@ from source.map_engine.tile import Tile
 from source.map_engine.rect import Rect
 from source.entity import Entity
 from random import randint
+from source.components.ai import BasicCreature
+from source.components.combatData import CombatData
+from source.render_functions import RenderOrder
 
 
 class GameMap:
@@ -64,9 +67,19 @@ class GameMap:
 
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
                 if randint(0, 100) < 80:
-                    monster = Entity(x, y, 'o', libtcod.desaturated_green, "Orc", blocks=True)
+
+                    fighter_component = CombatData(hp=10, defense=0, attack=3)
+                    ai_component = BasicCreature()
+                    monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True,
+                                     render_order=RenderOrder.ACTOR, combat_data=fighter_component, ai=ai_component)
+
                 else:
-                    monster = Entity(x, y, 'T', libtcod.darker_green, "Troll", blocks=True)
+                    fighter_component = CombatData(hp=16, defense=1, attack=4)
+                    ai_component = BasicCreature()
+
+                    monster = Entity(x, y, 'T', libtcod.darker_green, 'Troll', blocks=True,
+                                     render_order=RenderOrder.ACTOR, combat_data=fighter_component, ai=ai_component)
+
                 entities.append(monster)
 
     def generate_room(self, room):
