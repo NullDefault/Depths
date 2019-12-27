@@ -3,11 +3,12 @@ import tcod as libtcod
 
 
 class CombatData:
-    def __init__(self, hp, defense, attack):
+    def __init__(self, hp, defense, attack, xp=0):
         self.max_hp = hp
         self.hp = hp
         self.defense = defense
         self.attack = attack
+        self.xp = xp
 
     def fight(self, target):
         results = []
@@ -28,7 +29,7 @@ class CombatData:
         self.hp -= dmg
 
         if self.hp <= 0:
-            results.append({'dead': self.owner})
+            results.append({'dead': self.owner, 'xp': self.xp})
 
         return results
 
