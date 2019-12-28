@@ -4,10 +4,10 @@ import tcod as libtcod
 
 class CombatData:
     def __init__(self, hp, defense, attack, xp=0):
-        self.max_hp = hp
+        self.base_max_hp = hp
         self.hp = hp
-        self.defense = defense
-        self.attack = attack
+        self.base_defense = defense
+        self.base_attack = attack
         self.xp = xp
 
     def fight(self, target):
@@ -22,6 +22,33 @@ class CombatData:
                 self.owner.name.capitalize(), target.name), libtcod.white)})
 
         return results
+
+    @property
+    def max_hp(self):
+        if self.owner and self.owner.equipment:
+            bonus = self.owner.equipment.max_hp_bonus
+        else:
+            bonus = 0
+
+        return self.base_max_hp + bonus
+
+    @property
+    def attack(self):
+        if self.owner and self.owner.equipment:
+            bonus = self.owner.equipment.attack_bonus
+        else:
+            bonus = 0
+
+        return self.base_attack + bonus
+
+    @property
+    def defense(self):
+        if self.owner and self.owner.equipment:
+            bonus = self.owner.equipment.defense_bonus
+        else:
+            bonus = 0
+
+        return self.base_defense + bonus
 
     def take_damage(self, dmg):
         results = []

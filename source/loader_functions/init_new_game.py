@@ -1,8 +1,11 @@
 import tcod as libtcod
 from source.components.combatData import CombatData
+from source.components.equipment import Equipment
+from source.components.equippable import Equippable
 from source.components.inventory import Inventory
 from source.components.level import Level
 from source.entity import Entity
+from source.equipment_slots import EquipmentSlots
 from source.game_messages import MessageLog
 from source.game_states import GameStates
 from source.map_engine.game_map import GameMap
@@ -71,12 +74,21 @@ def get_constants():
 
 
 def get_game_variables(constants):
-    fighter_component = CombatData(hp=100, defense=1, attack=4)
+
+    fighter_component = CombatData(hp=100, defense=1, attack=2)
     inventory_component = Inventory(26)
     level_component = Level()
+    equipment_component = Equipment()
+
     player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, render_order=RenderOrder.ACTOR,
-                    combat_data=fighter_component, inventory=inventory_component, level=level_component)
+                    combat_data=fighter_component, inventory=inventory_component, level=level_component,
+                    equipment=equipment_component)
     entities = [player]
+
+    equippable_component = Equippable(EquipmentSlots.MAIN_HAND, attack_bonus=2)
+    dagger = Entity(0, 0, '-', libtcod.sky, 'Dagger', equippable=equippable_component)
+    player.inventory.add_item(dagger)
+    player.equipment.toggle_equip(dagger)
 
     game_map = GameMap(constants['map_width'], constants['map_height'])
     game_map.generate_map(constants['max_rooms'], constants['min_room_size'], constants['max_room_size'],
