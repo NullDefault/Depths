@@ -1,6 +1,6 @@
 import tcod as libtcod
 from source.game_states import GameStates
-from source.render_functions import RenderOrder
+from source.rendering.render_functions import RenderOrder
 from source.game_messages import Message
 
 

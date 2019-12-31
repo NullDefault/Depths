@@ -1,30 +1,35 @@
-import math
+import math, pygame
+
 import tcod as libtcod
 
 from source.components.item import Item
-from source.render_functions import RenderOrder
+from source.rendering.render_functions import RenderOrder
+from source.rendering.texture_master import get_sprite
 
 
 def get_blocking_entities_at_location(entities, destination_x, destination_y):
     for entity in entities:
-        if entity.blocks and entity.x == destination_x and entity.y == destination_y:
+        if entity.blocks and entity.rect.left == destination_x and entity.rect.top == destination_y:
             return entity
 
     return None
 
 
-class Entity:
+class Entity(pygame.sprite.Sprite):
 
-    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE,
+    def __init__(self, x, y, sprite_name, name, blocks=False, render_order=RenderOrder.CORPSE,
                  combat_data=None, ai=None, item=None, inventory=None, stairs=None, level=None,
                  equipment=None, equippable=None):
-        self.x = x
-        self.y = y
-        self.char = char
-        self.color = color
+
         self.name = name
+
+        pygame.sprite.Sprite.__init__(self)
+        self.image = get_sprite(sprite_name)
+        self.rect = self.image.get_rect()
+        self.rect.left, self.rect.top = (x, y)
         self.blocks = blocks
         self.render_order = render_order
+
         self.combat_data = combat_data
         self.ai = ai
         self.item = item
@@ -64,12 +69,12 @@ class Entity:
                 self.item.owner = self
 
     def move(self, dx, dy):
-        self.x += dx
-        self.y += dy
+        self.rect.left += dx
+        self.rect.top += dy
 
     def move_towards(self, target_x, target_y, game_map, entities):
-        dx = target_x - self.x
-        dy = target_y - self.y
+        dx = target_x - self.rect.left
+        dy = target_y - self.rect.top
         distance = math.sqrt(dx ** 2 + dy ** 2)
 
         dx = int(round(dx / distance))
@@ -95,14 +100,14 @@ class Entity:
         for entity in entities:
             if entity.blocks and entity != self and entity != target:
                 # Set the tile as a wall so it must be navigated around
-                libtcod.map_set_properties(fov, entity.x, entity.y, True, False)
+                libtcod.map_set_properties(fov, entity.rect.left, entity.rect.top, True, False)
 
         # Allocate a A* path
         # The 1.41 is the normal diagonal cost of moving, it can be set as 0.0 if diagonal moves are prohibited
         my_path = libtcod.path_new_using_map(fov, 1.41)
 
         # Compute the path between self's coordinates and the target's coordinates
-        libtcod.path_compute(my_path, self.x, self.y, target.x, target.y)
+        libtcod.path_compute(my_path, self.rect.left, self.rect.top, target.rect.left, target.rect.top)
 
         # Check if the path exists, and in this case, also the path is shorter than 25 tiles
         # The path size matters if you want the monster to use alternative longer paths (for example through other rooms) if for example the player is in a corridor
@@ -112,12 +117,12 @@ class Entity:
             x, y = libtcod.path_walk(my_path, True)
             if x or y:
                 # Set self's coordinates to the next path tile
-                self.x = x
-                self.y = y
+                self.rect.left = x
+                self.rect.top = y
         else:
             # Keep the old move function as a backup so that if there are no paths (for example another monster blocks a corridor)
             # it will still try to move towards the player (closer to the corridor opening)
-            self.move_towards(target.x, target.y, game_map, entities)
+            self.move_towards(target.rect.left, target.rect.top, game_map, entities)
 
             # Delete the path to free memory
         libtcod.path_delete(my_path)
@@ -126,6 +131,6 @@ class Entity:
         return math.sqrt((x - self.x) ** 2 + (y - self.y) ** 2)
 
     def distance_to(self, other):
-        dx = other.x - self.x
-        dy = other.y - self.y
+        dx = other.rect.left - self.rect.left
+        dy = other.rect.top - self.rect.top
         return math.sqrt(dx ** 2 + dy ** 2)

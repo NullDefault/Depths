@@ -1,84 +1,26 @@
 import tcod as libtcod
+import pygame
 
 from source.death_functions import kill_player, kill_monster
 from source.entity import get_blocking_entities_at_location
-from source.game_messages import Message
 from source.game_states import GameStates
-from source.input_master import handle_main_menu, handle_keys, handle_mouse
-from source.loader_functions.data_loaders import load_game, save_game
+from source.input_master import handle_keys, handle_mouse
 from source.loader_functions.init_new_game import get_constants, get_game_variables
-from source.menus import main_menu, message_box
-from source.render_functions import initialize_fov, recompute_fov, render_all, clear_all
+from source.rendering.render_functions import recompute_fov, initialize_fov, get_render
+from source.game_messages import Message
 
 
 def main():
+    run_game = True
+
     constants = get_constants()
 
-    libtcod.console_set_custom_font('assets/arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+    game_screen = pygame.display.set_mode(constants['screen_size'])
+    background_image = pygame.image.load("assets/background.png")
 
-    libtcod.console_init_root(constants['screen_width'], constants['screen_height'], constants['window_title'], False)
+    player, entities, game_map, message_log, game_state = get_game_variables(constants)
 
-    con = libtcod.console_new(constants['screen_width'], constants['screen_height'])
-    panel = libtcod.console_new(constants['screen_width'], constants['panel_height'])
-
-    player = None
-    entities = []
-    game_map = None
-    message_log = None
-    game_state = None
-
-    show_main_menu = True
-    show_load_error_message = False
-
-    main_menu_background_image = libtcod.image_load('menu_background.png')
-
-    key = libtcod.Key()
-    mouse = libtcod.Mouse()
-
-    while not libtcod.console_is_window_closed():
-        libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
-
-        if show_main_menu:
-            main_menu(con, main_menu_background_image, constants['screen_width'],
-                      constants['screen_height'])
-
-            if show_load_error_message:
-                message_box(con, 'No save game to load', 50, constants['screen_width'], constants['screen_height'])
-
-            libtcod.console_flush()
-
-            action = handle_main_menu(key)
-
-            new_game = action.get('new_game')
-            load_saved_game = action.get('load_game')
-            exit_game = action.get('exit')
-
-            if show_load_error_message and (new_game or load_saved_game or exit_game):
-                show_load_error_message = False
-            elif new_game:
-                player, entities, game_map, message_log, game_state = get_game_variables(constants)
-                game_state = GameStates.PLAYERS_TURN
-
-                show_main_menu = False
-            elif load_saved_game:
-                try:
-                    player, entities, game_map, message_log, game_state = load_game()
-                    show_main_menu = False
-                except FileNotFoundError:
-                    show_load_error_message = True
-            elif exit_game:
-                break
-
-        else:
-            libtcod.console_clear(con)
-            play_game(player, entities, game_map, message_log, game_state, con, panel, constants)
-
-            show_main_menu = True
-
-
-def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
     fov_recompute = True
-
     fov_map = initialize_fov(game_map)
 
     key = libtcod.Key()
@@ -88,23 +30,22 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
     previous_game_state = game_state
 
     targeting_item = None
+    while run_game:
 
-    while not libtcod.console_is_window_closed():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
 
         if fov_recompute:
-            recompute_fov(fov_map, player.x, player.y, constants['fov_radius'], constants['fov_light_walls'],
+            recompute_fov(fov_map, player.rect.left, player.rect.top, constants['fov_radius'], constants['fov_light_walls'],
                           constants['fov_algorithm'])
 
-        render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log,
-                   constants['screen_width'], constants['screen_height'], constants['bar_width'],
-                   constants['panel_height'], constants['panel_y'], mouse, constants['colors'], game_state)
+        game_screen.blit(background_image, (0, 0))
+        entities_to_be_rendered = get_render(game_screen, entities, game_map, fov_map, fov_recompute)
+
+        entities_to_be_rendered.draw(game_screen)
+
+        pygame.display.flip()
 
         fov_recompute = False
-
-        libtcod.console_flush()
-
-        clear_all(con, entities)
 
         action = handle_keys(key, game_state)
         mouse_action = handle_mouse(mouse)
@@ -180,16 +121,14 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                     entities = game_map.next_floor(player, message_log, constants)
                     fov_map = initialize_fov(game_map)
                     fov_recompute = True
-                    libtcod.console_clear(con)
-
                     break
             else:
                 message_log.add_message(Message('There are no stairs here.', libtcod.yellow))
 
         if level_up:
             if level_up == 'hp':
-                player.fighter.base_max_hp += 20
-                player.fighter.hp += 20
+                player.combat_data.base_max_hp += 20
+                player.combat_data.hp += 20
             elif level_up == 'str':
                 player.combat_data.base_attack += 1
             elif level_up == 'def':
@@ -217,12 +156,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             elif game_state == GameStates.TARGETING:
                 player_turn_results.append({'targeting_cancelled': True})
             else:
-                save_game(player, entities, game_map, message_log, game_state)
-
-                return True
-
-        if fullscreen:
-            libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+                run_game = False
 
         for player_turn_result in player_turn_results:
             message = player_turn_result.get('message')
