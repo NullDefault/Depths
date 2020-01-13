@@ -9,6 +9,7 @@ from source.user_interface.game_messages import Message
 
 
 def kill_player(player):
+    player.image = textures['corpse']
     return Message('You died!', tcod.red), GameStates.PLAYER_DEAD
 
 
