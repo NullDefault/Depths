@@ -1,4 +1,4 @@
-from source.equipment_slots import EquipmentSlots
+from source.data_banks.equipment_slots import EquipmentSlots
 
 
 class Equipment:

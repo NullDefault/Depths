@@ -1,5 +1,5 @@
-import tcod as libtcod
-from source.game_messages import Message
+import tcod
+from source.user_interface.game_messages import Message
 from random import randint
 
 
@@ -7,10 +7,10 @@ class BasicCreature:
     def take_turn(self, target, fov_map, game_map, entities):
         results = []
         monster = self.owner
-        if libtcod.map_is_in_fov(fov_map, monster.x, monster.y):
+        if tcod.map_is_in_fov(fov_map, monster.x, monster.y):
 
             if monster.distance_to(target) >= 2:
-                monster.move_astar(target, entities, game_map)
+                monster.move_a_star(target, entities, game_map)
 
             elif target.combat_data.hp > 0:
                 attack_results = monster.combat_data.fight(target)

@@ -1,19 +1,26 @@
-import tcod as libtcod
+import tcod
+import pygame
+from random import randint
 
+from source.components.ai import BasicCreature
+from source.components.combat_data import CombatData
 from source.components.equippable import Equippable
 from source.components.item import Item
-from source.equipment_slots import EquipmentSlots
-from source.item_functions import heal, cast_lightning, cast_fireball, cast_confuse
+from source.map_engine.MapRect import MapRect
+
+from source.user_interface.game_messages import Message
+
+from source.data_banks.equipment_slots import EquipmentSlots
+from source.data_banks.item_functions import heal, cast_fireball, cast_confuse, cast_lightning
+
 from source.map_engine.tile import Tile
-from source.map_engine.rect import Rect
-from source.entity import Entity
-from random import randint
-from source.components.ai import BasicCreature
-from source.components.combatData import CombatData
-from source.random_utilities import random_choice_from_dict, from_dungeon_level
-from source.rendering.render_functions import RenderOrder
-from source.game_messages import Message
-from source.stairs import Stairs
+
+from source.data_banks.render_order import RenderOrder
+
+from source.misc_functions.random_utilities import from_dungeon_level, random_choice_from_dict
+
+from source.game_entities.stairs import Stairs
+from source.game_entities.entity import Entity
 
 
 class GameMap:
@@ -23,12 +30,27 @@ class GameMap:
         self.tiles = self.initialize_tiles()
         self.dungeon_level = dungeon_level
 
+    def print_map(self):
+        for y in range(self.height):
+            for x in range(self.width):
+
+                wall = self.tiles[x][y].block_sight
+
+                if wall:
+                    print('#  ', end='')
+                    if x == self.width - 1:
+                        print('\n')
+                else:
+                    print('   ', end='')
+                    if x == self.width - 1:
+                        print('\n')
+
     def initialize_tiles(self):
         tiles = [[Tile(True) for y in range(self.height)] for x in range(self.width)]
 
         return tiles
 
-    def generate_map(self, max_rooms, min_room_size, max_room_size, map_width, map_height,
+    def generate_map(self, max_rooms, min_room_size, max_room_size, map_width, map_height,  # TODO: This is bugged and doesnt always fit all the rooms in the tile grid, needs to be fixed
                      player, entities):
         rooms = []
         num_rooms = 0
@@ -43,7 +65,7 @@ class GameMap:
             x = randint(0, map_width - w - 1)
             y = randint(0, map_height - h - 1)
 
-            new_room = Rect(x, y, w, h)
+            new_room = MapRect(x, y, w, h)
 
             for other_room in rooms:
                 if new_room.intersect(other_room):
@@ -51,14 +73,15 @@ class GameMap:
             else:
                 self.generate_room(new_room)
 
-                (new_x, new_y) = new_room.center()
+                (new_x, new_y) = new_room.center()  # Center Point
 
                 center_of_last_room_x = new_x
                 center_of_last_room_y = new_y
 
                 if num_rooms == 0:
-                    player.rect.left = new_x
-                    player.rect.top = new_y
+                    player.x = new_x
+                    player.y = new_y
+                    player.move(0, 0)  # To update the player rect as well
                 else:
                     (prev_x, prev_y) = rooms[num_rooms - 1].center()
 
@@ -103,7 +126,7 @@ class GameMap:
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
 
-            if not any([entity for entity in entities if entity.rect.left == x and entity.rect.top == y]):
+            if not any([entity for entity in entities if entity.x == x and entity.y == y]):
                 monster_choice = random_choice_from_dict(monster_chances)
 
                 if monster_choice == 'orc':
@@ -126,7 +149,7 @@ class GameMap:
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
 
-            if not any([entity for entity in entities if entity.rect.left == x and entity.rect.top == y]):
+            if not any([entity for entity in entities if entity.x == x and entity.y == y]):
                 item_choice = random_choice_from_dict(item_chances)
 
                 if item_choice == 'healing_potion':
@@ -134,20 +157,20 @@ class GameMap:
                     item = Entity(x, y, 'potion', 'Healing Potion', render_order=RenderOrder.ITEM,
                                   item=item_component)
                 elif item_choice == 'sword':
-                    equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=3)
+                    equippable_component = Equippable(EquipmentSlots.MAIN_HAND, attack_bonus=3)
                     item = Entity(x, y, 'sword', 'Sword', equippable=equippable_component)
                 elif item_choice == 'shield':
                     equippable_component = Equippable(EquipmentSlots.OFF_HAND, defense_bonus=1)
                     item = Entity(x, y, 'shield', 'Shield', equippable=equippable_component)
                 elif item_choice == 'fireball_scroll':
                     item_component = Item(use_function=cast_fireball, targeting=True, targeting_message=Message(
-                        'Left-click a target tile for the fireball, or right-click to cancel.', libtcod.light_cyan),
+                        'Left-click a target tile for the fireball, or right-click to cancel.', tcod.light_cyan),
                                           damage=25, radius=3)
                     item = Entity(x, y, 'scroll', 'Confusion Scroll', render_order=RenderOrder.ITEM,
                                   item=item_component)
                 elif item_choice == 'confusion_scroll':
                     item_component = Item(use_function=cast_confuse, targeting=True, targeting_message=Message(
-                        'Left-click an enemy to confuse it, or right-click to cancel.', libtcod.light_cyan))
+                        'Left-click an enemy to confuse it, or right-click to cancel.', tcod.light_cyan))
                     item = Entity(x, y, 'scroll', 'Fireball Scroll', render_order=RenderOrder.ITEM,
                                   item=item_component)
                 else:
@@ -186,10 +209,10 @@ class GameMap:
 
         self.tiles = self.initialize_tiles()
         self.generate_map(constants['max_rooms'], constants['min_room_size'], constants['max_room_size'],
-                      constants['map_width'], constants['map_height'], player, entities)
+                          constants['map_width'], constants['map_height'], player, entities)
 
         player.combat_data.heal(player.combat_data.max_hp // 2)
 
-        message_log.add_message(Message('You take a moment to rest, and recover your strength.', libtcod.light_violet))
+        message_log.add_message(Message('You take a moment to rest, and recover your strength.', tcod.light_violet))
 
         return entities

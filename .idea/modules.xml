@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/untitled_roguelike_project.iml" filepath="$PROJECT_DIR$/.idea/untitled_roguelike_project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/depths.iml" filepath="$PROJECT_DIR$/.idea/depths.iml" />
     </modules>
   </component>
 </project>
