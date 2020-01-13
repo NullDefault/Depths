@@ -26,7 +26,8 @@ textures = {
     'troll': pygame.image.load("assets/enemies/troll.png"),
 
     # MISC
-    'corpse': pygame.image.load("assets/misc/corpse.png")
+    'corpse': pygame.image.load("assets/misc/corpse.png"),
+    'black_bg': pygame.image.load("assets/misc/black_bg.png")
 }
 
 

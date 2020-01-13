@@ -6,7 +6,7 @@ from source.components.ai import BasicCreature
 from source.components.combat_data import CombatData
 from source.components.equippable import Equippable
 from source.components.item import Item
-from source.map_engine.MapRect import MapRect
+from source.map_engine.map_rect import MapRect
 
 from source.user_interface.game_messages import Message
 

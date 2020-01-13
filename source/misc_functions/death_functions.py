@@ -1,19 +1,20 @@
 import tcod
+
 from source.data_banks.game_states import GameStates
 from source.data_banks.render_order import RenderOrder
+
+from source.assets.texture_database import textures
+
 from source.user_interface.game_messages import Message
 
 
 def kill_player(player):
-    player.color = tcod.dark_red
-
     return Message('You died!', tcod.red), GameStates.PLAYER_DEAD
 
 
 def kill_monster(monster):
 
-    monster.char = '%'
-    monster.color = tcod.dark_red
+    monster.image = textures['corpse']
     monster.blocks = False
     monster.fighter = None
     monster.ai = None

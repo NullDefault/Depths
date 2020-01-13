@@ -8,7 +8,7 @@ from source.loading_functions.init_new import get_constants, get_game_variables
 from source.user_interface.input_functions import process_event
 from source.user_interface.game_messages import Message
 
-from source.render_functions.rendering import recompute_fov, initialize_fov, get_render
+from source.render_functions.rendering import recompute_fov, initialize_fov, get_render, render_player
 
 from source.misc_functions.death_functions import kill_monster, kill_player
 
@@ -35,16 +35,22 @@ def main():
 
     targeting_item = None
 
+    game_clock = pygame.time.Clock()
+    game_frame_rate = 24
+
     while running:
+
+        game_clock.tick(game_frame_rate)
 
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'],
-                            constants['fov_light_walls'], constants['fov_algorithm'])
+                          constants['fov_light_walls'], constants['fov_algorithm'])
+
+        current_render_state = get_render(background_image, entities, player, game_map, fov_map, fov_recompute)
+        current_render_state.draw(background_image)
+        render_player(background_image, player)
 
         game_screen.blit(background_image, (0, 0))
-
-        entities_to_be_rendered = get_render(game_screen, entities, game_map, fov_map, fov_recompute)
-        entities_to_be_rendered.draw(game_screen)
 
         pygame.display.flip()
 
