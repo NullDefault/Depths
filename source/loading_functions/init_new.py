@@ -23,7 +23,7 @@ from source.components.level import Level
 def get_constants():
     window_title = 'Depths_Game'
 
-    screen_size = (1024, 768)
+    screen_size = (1280, 768)
     map_width = 40
     map_height = 40
 

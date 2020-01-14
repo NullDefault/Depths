@@ -5,7 +5,6 @@ Notes:
 '''
 
 import tcod
-import pygame
 
 from source.assets.texture_database import textures
 
@@ -19,49 +18,42 @@ floor_visible = textures['floor_visible']
 floor_invisible = textures['floor_invisible']
 
 
-def get_render(game_screen, entities, player, game_map, fov_map, fov_recompute):
-    entities_to_render = pygame.sprite.RenderUpdates()
+def get_render(entities, game_map, fov_map):
+    game_screen = textures['background']
     entities_in_render_order = sorted(entities, key=lambda n: n.render_order.value)
 
+    for y in range(game_map.height):
+
+        for x in range(game_map.width):
+            visible = tcod.map_is_in_fov(fov_map, x, y)
+            wall = game_map.tiles[x][y].block_sight
+
+            if visible:
+                if wall:
+                    game_screen.blit(black_bg, (x * RENDER_SCALE, y * RENDER_SCALE))
+                    game_screen.blit(wall_visible, (x * RENDER_SCALE, y * RENDER_SCALE))
+                else:
+                    game_screen.blit(black_bg, (x * RENDER_SCALE, y * RENDER_SCALE))
+                    game_screen.blit(floor_visible, (x * RENDER_SCALE, y * RENDER_SCALE))
+
+                game_map.tiles[x][y].explored = True
+
+            elif game_map.tiles[x][y].explored:
+                if wall:
+                    game_screen.blit(black_bg, (x * RENDER_SCALE, y * RENDER_SCALE))
+                    game_screen.blit(wall_invisible, (x * RENDER_SCALE, y * RENDER_SCALE))
+                else:
+                    game_screen.blit(black_bg, (x * RENDER_SCALE, y * RENDER_SCALE))
+                    game_screen.blit(floor_invisible, (x * RENDER_SCALE, y * RENDER_SCALE))
+
     for entity in entities_in_render_order:
-        if entity is player:
-            continue
         x, y = entity.x, entity.y
         visible = tcod.map_is_in_fov(fov_map, x, y)
         if visible:
-            entities_to_render.add(entity)
+            game_screen.blit(black_bg, (x * RENDER_SCALE, y * RENDER_SCALE))
+            game_screen.blit(entity.image, (x * RENDER_SCALE, y * RENDER_SCALE))
 
-    if fov_recompute:
-        for y in range(game_map.height):
-            for x in range(game_map.width):
-
-                visible = tcod.map_is_in_fov(fov_map, x, y)
-                wall = game_map.tiles[x][y].block_sight
-
-                if visible:
-                    if wall:
-                        game_screen.blit(black_bg, (x * RENDER_SCALE, y * RENDER_SCALE))
-                        game_screen.blit(wall_visible, (x * RENDER_SCALE, y * RENDER_SCALE))
-                    else:
-                        game_screen.blit(black_bg, (x * RENDER_SCALE, y * RENDER_SCALE))
-                        game_screen.blit(floor_visible, (x * RENDER_SCALE, y * RENDER_SCALE))
-
-                    game_map.tiles[x][y].explored = True
-
-                elif game_map.tiles[x][y].explored:
-                    if wall:
-                        game_screen.blit(black_bg, (x * RENDER_SCALE, y * RENDER_SCALE))
-                        game_screen.blit(wall_invisible, (x * RENDER_SCALE, y * RENDER_SCALE))
-                    else:
-                        game_screen.blit(black_bg, (x * RENDER_SCALE, y * RENDER_SCALE))
-                        game_screen.blit(floor_invisible, (x * RENDER_SCALE, y * RENDER_SCALE))
-
-    return entities_to_render
-
-
-def render_player(game_screen, player):
-    game_screen.blit(black_bg, (player.x * RENDER_SCALE, player.y * RENDER_SCALE))
-    game_screen.blit(player.image, (player.x * RENDER_SCALE, player.y * RENDER_SCALE))
+    return game_screen
 
 
 def initialize_fov(game_map):

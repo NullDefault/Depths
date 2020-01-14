@@ -14,7 +14,7 @@ from source.loading_functions.init_new import get_constants, get_game_variables
 from source.user_interface.input_functions import process_event
 from source.user_interface.game_messages import Message
 
-from source.render_functions.rendering import recompute_fov, initialize_fov, get_render, render_player
+from source.render_functions.rendering import recompute_fov, initialize_fov, get_render
 
 from source.misc_functions.death_functions import kill_monster, kill_player
 
@@ -26,8 +26,8 @@ def main():
 
     constants = get_constants()
 
-    game_screen = pygame.display.set_mode(constants['screen_size'])
-    background_image = pygame.image.load('assets/background.png')
+    display = pygame.display.set_mode(constants['screen_size'])
+    console_bg = pygame.image.load('assets/ui_elements/console_background.png')
 
     player, entities, game_map, message_log, game_state = get_game_variables(constants)
 
@@ -52,14 +52,12 @@ def main():
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'],
                           constants['fov_light_walls'], constants['fov_algorithm'])
 
-        current_render_state = get_render(background_image, entities, player, game_map, fov_map, fov_recompute)
-        current_render_state.draw(background_image)
-        render_player(background_image, player)
+        abstract_game_screen = get_render(entities, game_map, fov_map)
 
-        game_screen.blit(background_image, (0, 0))
+        display.blit(abstract_game_screen, (0, 0))
+        display.blit(console_bg, (800, 0))
 
         pygame.display.flip()
-
         fov_recompute = False
 
         move = action.get('move')
@@ -72,7 +70,7 @@ def main():
         level_up = action.get('level_up')
         show_character_screen = action.get('show_character_screen')
         wait = action.get('wait')
-        quit = action.get('exit')
+        quit_game = action.get('exit')
 
         left_click = mouse_action.get('left_click')
         right_click = mouse_action.get('right_click')
@@ -128,6 +126,7 @@ def main():
                 player_turn_results.extend(player.inventory.drop_item(item))
 
         if take_stairs and game_state == GameStates.PLAYERS_TURN:
+            print('stairs')
             for entity in entities:
                 if entity.stairs and entity.x == player.x and entity.y == player.y:
                     entities = game_map.next_floor(player, message_log, constants)
@@ -162,7 +161,10 @@ def main():
             elif right_click:
                 player_turn_results.append({'targeting_cancelled': True})
 
-        if quit:
+        if fullscreen:
+            display = pygame.display.set_mode(constants['screen_size'], pygame.FULLSCREEN)
+
+        if quit_game:
             if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_SCREEN):
                 game_state = previous_game_state
             elif game_state == GameStates.TARGETING:

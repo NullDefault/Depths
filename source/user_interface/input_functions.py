@@ -15,7 +15,8 @@ def process_event(event, game_state):
     if event.type == pygame.MOUSEBUTTONDOWN:  # This should probably use mousebuttonup instead
         m = handle_mouse(pygame.mouse.get_pos(), pygame.mouse.get_pressed()[0], pygame.mouse.get_pressed()[1])
 
-    elif event.type == pygame.KEYDOWN:
+    if event.type == pygame.KEYDOWN:
+        #  print(pygame.key.name(event.key))
         k = handle_keys(pygame.key.name(event.key), game_state)
 
     return k, m
@@ -49,40 +50,39 @@ def handle_mouse(loc, l_pressed, r_pressed):
 
 def handle_player_turn_keys(key):
     # Movement keys
-    if key == 'up' or key == 'w':
+    if key == 'up' or key == 'w' or key == '[8]':  # Note : [i] correspond to num pad keys
         return {'move': (0, -1)}
-    elif key == 'down' or key == 's':
+    elif key == 'down' or key == 's' or key == '[2]':
         return {'move': (0, 1)}
-    elif key == 'left' or key == 'a':
+    elif key == 'left' or key == 'a' or key == '[4]':
         return {'move': (-1, 0)}
-    elif key == 'right' or key == 'd':
+    elif key == 'right' or key == 'd' or key == '[6]':
         return {'move': (1, 0)}
 
-    elif key == 'y':
+    elif key == 'q' or key == '[7]':  # Up Left
         return {'move': (-1, -1)}
-    elif key == 'u':
+    elif key == 'e' or key == '[9]':  # Up Right
         return {'move': (1, -1)}
-    elif key == 'b':
+    elif key == 'x' or key == '[1]':  # Down Left
         return {'move': (-1, 1)}
-    elif key == 'n':
+    elif key == 'c' or key == '[3]':  # Down Right
         return {'move': (1, 1)}
 
-    elif key == 'wait':
+    elif key == 'z':
         return {'wait': True}
 
-    if key == 'fullscreen':
-        # Alt+Enter: toggle full screen
+    elif key == 'f11':
         return {'fullscreen': True}
 
-    elif key == 'pickup':
+    elif key == 'space':
         return {'pickup': True}
-    elif key == 'show_inventory':
+    elif key == 'tab':
         return {'show_inventory': True}
-    elif key == 'drop_inventory':
+    elif key == 'shift':
         return {'drop_inventory': True}
-    elif key == 'enter':
+    elif key == 'return':
         return {'take_stairs': True}
-    elif key == 'character screen':
+    elif key == 'h':
         return {'show_character_screen': True}
 
     elif key == 'escape':
@@ -101,10 +101,10 @@ def handle_targeting_keys(key):
 
 
 def handle_player_dead_keys(key):
-    if key == 'inventory':
+    if key == 'tab':
         return {'show_inventory': True}
 
-    if key == 'fullscreen':
+    if key == 'f11':
         # Alt+Enter: toggle full screen
         return {'fullscreen': True}
     elif key == 'escape':
@@ -114,7 +114,7 @@ def handle_player_dead_keys(key):
     return {}
 
 
-def handle_main_menu(key):  # Menus arent implemented rn so this isnt working
+def handle_main_menu(key):
 
     if key == '1':
         return {'new_game': True}
@@ -126,7 +126,7 @@ def handle_main_menu(key):  # Menus arent implemented rn so this isnt working
     return {}
 
 
-def handle_level_up_menu(key):  # SAME HERE FIX
+def handle_level_up_menu(key):
     if key:
 
         if key == '1':
@@ -139,8 +139,9 @@ def handle_level_up_menu(key):  # SAME HERE FIX
     return {}
 
 
-def handle_inventory_keys(key):  # SAME HERE FIX
-    index = key.c - ord('a')
+def handle_inventory_keys(key):
+    print(key)
+    index = 0
 
     if index >= 0:
         return {'inventory_index': index}

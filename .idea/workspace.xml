@@ -2,30 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a4d1287c-a704-4267-b7fa-1e1dd001329e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/AsuS.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/AsuS.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/assets/background.png" beforeDir="false" afterPath="$PROJECT_DIR$/source/assets/ui_elements/background.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/assets/texture_database.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/assets/texture_database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/components/ai.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/components/ai.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/components/combat_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/components/combat_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/components/equipment.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/components/equipment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/components/equippable.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/components/equippable.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/components/inventory.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/components/inventory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/components/item.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/components/item.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/components/level.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/components/level.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/data_banks/equipment_slots.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/data_banks/equipment_slots.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/data_banks/game_states.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/data_banks/game_states.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/data_banks/item_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/data_banks/item_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/data_banks/render_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/data_banks/render_order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/game_entities/entity.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/game_entities/entity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/game_entities/stairs.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/game_entities/stairs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/loading_functions/init_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/loading_functions/init_new.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/map_engine/game_map.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/map_engine/game_map.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/map_engine/map_rect.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/map_engine/map_rect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/map_engine/tile.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/map_engine/tile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/misc_functions/death_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/misc_functions/death_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/misc_functions/random_utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/misc_functions/random_utilities.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/render_functions/rendering.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/render_functions/rendering.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/user_interface/game_messages.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/user_interface/game_messages.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/user_interface/input_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/user_interface/input_functions.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,23 +19,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/source/misc_functions/death_functions.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/source/loading_functions/init_new.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="84" selection-start-line="2" selection-start-column="84" selection-end-line="2" selection-end-column="84" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/source/misc_functions/random_utilities.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="115" selection-start-line="2" selection-start-column="115" selection-end-line="2" selection-end-column="115" />
+            <state relative-caret-position="204">
+              <caret line="25" column="23" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -60,10 +31,19 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/render_functions/rendering.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="89" selection-start-line="2" selection-start-column="89" selection-end-line="2" selection-end-column="89" />
+            <state relative-caret-position="102">
+              <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source/assets/texture_database.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#100#106#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -72,11 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/user_interface/game_messages.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="81" selection-start-line="2" selection-start-column="81" selection-end-line="2" selection-end-column="81" />
-              <folding>
-                <element signature="e#0#22#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="306">
+              <caret line="19" column="18" lean-forward="true" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -84,22 +61,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/user_interface/input_functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1907">
-              <caret line="2" column="59" selection-start-line="2" selection-start-column="59" selection-end-line="2" selection-end-column="59" />
+            <state relative-caret-position="340">
+              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#98#109#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4522">
-              <caret line="266" column="68" lean-forward="true" selection-start-line="266" selection-start-column="68" selection-end-line="266" selection-end-column="68" />
+            <state relative-caret-position="408">
+              <caret line="57" column="37" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#132#143#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -137,7 +114,6 @@
         <option value="$PROJECT_DIR$/source/map_engine/custom_rect.py" />
         <option value="$PROJECT_DIR$/source/map_engine/MapRect.py" />
         <option value="$PROJECT_DIR$/source/data_banks/key_table.py" />
-        <option value="$PROJECT_DIR$/source/assets/texture_database.py" />
         <option value="$PROJECT_DIR$/source/components/equippable.py" />
         <option value="$PROJECT_DIR$/source/components/inventory.py" />
         <option value="$PROJECT_DIR$/source/components/item.py" />
@@ -152,14 +128,15 @@
         <option value="$PROJECT_DIR$/source/game_entities/entity.py" />
         <option value="$PROJECT_DIR$/source/game_entities/stairs.py" />
         <option value="$PROJECT_DIR$/source/map_engine/tile.py" />
-        <option value="$PROJECT_DIR$/source/loading_functions/init_new.py" />
         <option value="$PROJECT_DIR$/source/map_engine/game_map.py" />
         <option value="$PROJECT_DIR$/source/map_engine/map_rect.py" />
         <option value="$PROJECT_DIR$/source/misc_functions/random_utilities.py" />
         <option value="$PROJECT_DIR$/source/misc_functions/death_functions.py" />
-        <option value="$PROJECT_DIR$/source/render_functions/rendering.py" />
         <option value="$PROJECT_DIR$/source/user_interface/game_messages.py" />
         <option value="$PROJECT_DIR$/source/user_interface/input_functions.py" />
+        <option value="$PROJECT_DIR$/source/loading_functions/init_new.py" />
+        <option value="$PROJECT_DIR$/source/assets/texture_database.py" />
+        <option value="$PROJECT_DIR$/source/render_functions/rendering.py" />
         <option value="$PROJECT_DIR$/source/main.py" />
       </list>
     </option>
@@ -187,6 +164,26 @@
               <item name="Depths" type="b2602c69:ProjectViewProjectNode" />
               <item name="depths_game" type="462c0819:PsiDirectoryNode" />
               <item name="source" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Depths" type="b2602c69:ProjectViewProjectNode" />
+              <item name="depths_game" type="462c0819:PsiDirectoryNode" />
+              <item name="source" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Depths" type="b2602c69:ProjectViewProjectNode" />
+              <item name="depths_game" type="462c0819:PsiDirectoryNode" />
+              <item name="source" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="enemies" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Depths" type="b2602c69:ProjectViewProjectNode" />
+              <item name="depths_game" type="462c0819:PsiDirectoryNode" />
+              <item name="source" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="ui_elements" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Depths" type="b2602c69:ProjectViewProjectNode" />
@@ -246,14 +243,14 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\AsuS\PycharmProjects\depths\source\components" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\AsuS\PycharmProjects\depths_game\source\assets\ui_elements" />
       <recent name="C:\Users\AsuS\PycharmProjects\depths\source" />
       <recent name="C:\Users\AsuS\PycharmProjects\depths\source\assets" />
       <recent name="C:\Users\AsuS\PycharmProjects\depths\source\misc_functions" />
       <recent name="C:\Users\AsuS\PycharmProjects\depths\source\engine" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\AsuS\PycharmProjects\depths\source\components" />
     </key>
   </component>
@@ -380,9 +377,6 @@
     <entry file="file://$PROJECT_DIR$/source/assets/structures/Floors/floor_visible.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/assets/background.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/source/assets/player.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -392,13 +386,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6426">
           <caret line="378" selection-start-line="378" selection-end-line="378" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/source/assets/texture_database.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
     </entry>
@@ -508,13 +495,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/loading_functions/init_new.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/source/map_engine/game_map.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -543,9 +523,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="84" selection-start-line="2" selection-start-column="84" selection-end-line="2" selection-end-column="84" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -556,43 +533,57 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/render_functions/rendering.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="89" selection-start-line="2" selection-start-column="89" selection-end-line="2" selection-end-column="89" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/source/assets/ui_elements/background.png">
+      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/source/user_interface/game_messages.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="81" selection-start-line="2" selection-start-column="81" selection-end-line="2" selection-end-column="81" />
+        <state relative-caret-position="306">
+          <caret line="19" column="18" lean-forward="true" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="57" column="37" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
           <folding>
-            <element signature="e#0#22#0" expanded="true" />
+            <element signature="e#132#143#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/source/user_interface/input_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1907">
-          <caret line="2" column="59" selection-start-line="2" selection-start-column="59" selection-end-line="2" selection-end-column="59" />
+        <state relative-caret-position="340">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#98#109#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/main.py">
+    <entry file="file://$PROJECT_DIR$/source/assets/texture_database.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4522">
-          <caret line="266" column="68" lean-forward="true" selection-start-line="266" selection-start-column="68" selection-end-line="266" selection-end-column="68" />
+        <state relative-caret-position="408">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#100#106#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/render_functions/rendering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/loading_functions/init_new.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="25" column="23" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
         </state>
       </provider>
     </entry>
