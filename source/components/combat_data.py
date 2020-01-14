@@ -1,3 +1,9 @@
+'''
+Name: Combat Data
+Function: Component that takes care of combat functionality and holds combat related data
+Notes:
+'''
+
 from source.user_interface.game_messages import Message
 import tcod
 

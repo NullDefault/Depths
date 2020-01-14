@@ -1,3 +1,9 @@
+'''
+Name: Initialize New
+Function: Generates a new game state, used for creating new floors and new games
+Notes:
+'''
+
 from source.game_entities.entity import Entity
 from source.user_interface.game_messages import MessageLog
 
@@ -51,7 +57,6 @@ def get_constants():
 
 
 def get_game_variables(constants):
-
     fighter_component = CombatData(hp=100, defense=1, attack=2)
     inventory_component = Inventory(26)
     level_component = Level()

@@ -1,3 +1,9 @@
+'''
+Name: Input Functions
+Function: Handles the logic behind processing player inputs
+Notes:
+'''
+
 import tcod
 import pygame
 from source.data_banks.game_states import GameStates
@@ -33,7 +39,6 @@ def handle_keys(key, game_state):
 
 
 def handle_mouse(loc, l_pressed, r_pressed):
-
     if l_pressed:
         return {'left_click': (loc[0], loc[1])}
     elif r_pressed:
@@ -96,7 +101,6 @@ def handle_targeting_keys(key):
 
 
 def handle_player_dead_keys(key):
-
     if key == 'inventory':
         return {'show_inventory': True}
 

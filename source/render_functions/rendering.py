@@ -1,3 +1,9 @@
+'''
+Name: Rendering
+Function: Handles the logic for rendering game entities, effectively the graphical engine
+Notes:
+'''
+
 import tcod
 import pygame
 
@@ -14,7 +20,6 @@ floor_invisible = textures['floor_invisible']
 
 
 def get_render(game_screen, entities, player, game_map, fov_map, fov_recompute):
-
     entities_to_render = pygame.sprite.RenderUpdates()
     entities_in_render_order = sorted(entities, key=lambda n: n.render_order.value)
 

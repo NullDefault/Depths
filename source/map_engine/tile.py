@@ -1,3 +1,10 @@
+'''
+Name: Tile
+Function: Represents a single game tile, the width and height are equal to whatever size the textures being used are
+Notes:
+'''
+
+
 class Tile:
 
     def __init__(self, blocked, block_sight=None):

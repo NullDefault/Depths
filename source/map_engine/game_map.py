@@ -1,5 +1,10 @@
+'''
+Name: Game Map
+Function: Holds data on the game map, functions to generate new maps and moving between floors
+Notes:
+'''
+
 import tcod
-import pygame
 from random import randint
 
 from source.components.ai import BasicCreature
@@ -50,7 +55,8 @@ class GameMap:
 
         return tiles
 
-    def generate_map(self, max_rooms, min_room_size, max_room_size, map_width, map_height,  # TODO: This is bugged and doesnt always fit all the rooms in the tile grid, needs to be fixed
+    def generate_map(self, max_rooms, min_room_size, max_room_size, map_width, map_height,
+                     # TODO: This is bugged and doesnt always fit all the rooms in the tile grid, needs to be fixed
                      player, entities):
         rooms = []
         num_rooms = 0

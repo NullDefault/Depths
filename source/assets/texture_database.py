@@ -1,3 +1,10 @@
+'''
+Name: Texture Database
+Function: Holds all the textures for the sake of convenience
+Notes:
+'''
+
+
 import pygame
 
 textures = {

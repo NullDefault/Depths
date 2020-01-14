@@ -1,3 +1,9 @@
+'''
+Name: Game States
+Function: Holds possible states the game loop can be in at a given moment
+Notes:
+'''
+
 from enum import Enum
 
 
@@ -10,4 +16,3 @@ class GameStates(Enum):
     TARGETING = 6
     LEVEL_UP = 7
     CHARACTER_SCREEN = 8
-

@@ -1,3 +1,10 @@
+'''
+Name: Map Rectangle
+Function: Custom rectangle class with some convenience method to make the game map code a little bit cleaner
+Notes:
+'''
+
+
 class MapRect:
     def __init__(self, x, y, w, h):
         self.x1 = x

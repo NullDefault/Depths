@@ -1,3 +1,9 @@
+'''
+Name: Death Functions
+Function: Collection of functions that handles entity death (through combat or else)
+Notes:
+'''
+
 import tcod
 
 from source.data_banks.game_states import GameStates
@@ -14,7 +20,6 @@ def kill_player(player):
 
 
 def kill_monster(monster):
-
     monster.image = textures['corpse']
     monster.blocks = False
     monster.fighter = None

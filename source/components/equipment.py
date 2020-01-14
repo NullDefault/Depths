@@ -1,3 +1,9 @@
+'''
+Name: Equipment
+Function: Components that holds data about items an entity is "using" such as a sword, shield or something like that
+Notes:
+'''
+
 from source.data_banks.equipment_slots import EquipmentSlots
 
 

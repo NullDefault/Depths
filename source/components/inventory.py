@@ -1,3 +1,9 @@
+'''
+Name: Inventory
+Function: Component attached to the player that is used to store items
+Notes:
+'''
+
 import tcod
 from source.user_interface.game_messages import Message
 

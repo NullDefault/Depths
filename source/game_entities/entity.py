@@ -1,3 +1,11 @@
+'''
+Name: Entity
+Function: One of the most important logic classes, holds data on a game entity and a variety of functions necessary
+          for its usual behavior.
+Notes: x and y are the logical position of the entity on the tile board, rect.left and rect.top are how the entity
+       actually gets rendered -> rect position is easily obtained by multiplying x,y by 16 (the size of the textures)
+'''
+
 import math
 import pygame
 import tcod
@@ -35,8 +43,8 @@ class Entity(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x, self.y = (x, y)
         self.rect.left, self.rect.top = (x * 16, y * 16)  # x and y are the entities logical position on the game grid
-        self.blocks = blocks                              # rect.left and rect.top are the entity render destination
-        self.render_order = render_order                  # since all textures are 16x16, just multiply x and y by 16
+        self.blocks = blocks  # rect.left and rect.top are the entity render destination
+        self.render_order = render_order  # since all textures are 16x16, just multiply x and y by 16
 
         self.combat_data = combat_data
         self.ai = ai

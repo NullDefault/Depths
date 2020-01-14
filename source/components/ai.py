@@ -1,8 +1,15 @@
+'''
+Name: AI
+Function: Various AI's for controlling the behavior of npc's
+Notes:
+'''
+
 import tcod
 from source.user_interface.game_messages import Message
 from random import randint
 
 
+# Default NPC AI
 class BasicCreature:
     def take_turn(self, target, fov_map, game_map, entities):
         results = []
@@ -19,6 +26,7 @@ class BasicCreature:
         return results
 
 
+# NPC affected by the confusion status effect
 class ConfusedCreature:
     def __init__(self, previous_ai, number_of_turns=10):
         self.previous_ai = previous_ai
@@ -37,6 +45,6 @@ class ConfusedCreature:
             self.number_of_turns -= 1
         else:
             self.owner.ai = self.previous_ai
-            results.append({'message': Message('The {0} is no longer confused!'.format(self.owner.name), libtcod.red)})
+            results.append({'message': Message('The {0} is no longer confused!'.format(self.owner.name), tcod.red)})
 
         return results

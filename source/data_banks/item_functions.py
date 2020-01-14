@@ -1,3 +1,9 @@
+'''
+Name: Item Functions
+Function: Holds functions representing the functionality of various items
+Notes:
+'''
+
 import tcod
 
 from source.components.ai import ConfusedCreature
@@ -42,7 +48,8 @@ def cast_lightning(*args, **kwargs):
     if target:
         results.append(
             {'consumed': True, 'target': target, 'message':
-            Message('A lighting bolt strikes the {0} with a loud thunder! The damage is {1}'.format(target.name, damage))})
+                Message('A lighting bolt strikes the {0} with a loud thunder! The damage is {1}'.format(target.name,
+                                                                                                        damage))})
         results.extend(target.combat_data.take_damage(damage))
     else:
         results.append({'consumed': False, 'target': None, 'message':
