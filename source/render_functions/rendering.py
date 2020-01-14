@@ -5,6 +5,7 @@ Notes:
 '''
 
 import tcod
+from pygame import Surface
 
 from source.assets.texture_database import textures
 
@@ -19,7 +20,8 @@ floor_invisible = textures['floor_invisible']
 
 
 def get_render(entities, game_map, fov_map):
-    game_screen = textures['background']
+    game_screen = Surface((800, 800))
+    game_screen.blit(textures['background'], (0, 0))
     entities_in_render_order = sorted(entities, key=lambda n: n.render_order.value)
 
     for y in range(game_map.height):
