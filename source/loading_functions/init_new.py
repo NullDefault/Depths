@@ -5,7 +5,7 @@ Notes:
 '''
 
 from source.game_entities.entity import Entity
-from source.user_interface.game_messages import MessageLog, MessageRenderer
+from source.user_interface.console import Console
 
 from source.data_banks.equipment_slots import EquipmentSlots
 from source.data_banks.render_order import RenderOrder
@@ -78,9 +78,8 @@ def get_game_variables(constants):
     game_map.generate_map(constants['max_rooms'], constants['min_room_size'], constants['max_room_size'],
                           constants['map_width'], constants['map_height'], player, entities)
 
-    message_log = MessageLog(800, 800, 15)
-    console_renderer = MessageRenderer(constants['font_size'], message_log)
+    console = Console(constants['font_size'], player)
 
     game_state = GameStates.PLAYERS_TURN
 
-    return player, entities, game_map, message_log, game_state, console_renderer
+    return player, entities, game_map, game_state, console

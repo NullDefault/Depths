@@ -38,7 +38,10 @@ textures = {
     'background': pygame.image.load(os.path.join('assets', 'ui_elements', 'background.png')),
 
     # UI
-    'console_bg': pygame.image.load(os.path.join('assets', 'ui_elements', 'console_background.png'))
+    'console_frame': pygame.image.load(os.path.join('assets', 'ui_elements', 'console_frame.png')),
+    'heart_full': pygame.image.load(os.path.join('assets', 'ui_elements', 'status_elements', 'heart_full.png')),
+    'heart_half': pygame.image.load(os.path.join('assets', 'ui_elements', 'status_elements', 'heart_half.png')),
+    'heart_empty': pygame.image.load(os.path.join('assets', 'ui_elements', 'status_elements', 'heart_empty.png'))
 }
 
 

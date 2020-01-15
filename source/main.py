@@ -28,7 +28,7 @@ def main():
 
     display = pygame.display.set_mode(constants['screen_size'])
 
-    player, entities, game_map, message_log, game_state, console_renderer = get_game_variables(constants)
+    player, entities, game_map, game_state, console = get_game_variables(constants)
 
     fov_recompute = True
     fov_map = initialize_fov(game_map)
@@ -51,12 +51,11 @@ def main():
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'],
                           constants['fov_light_walls'], constants['fov_algorithm'])
 
-        console_bg = pygame.image.load('assets/ui_elements/console_background.png')
-        abstract_game_screen = get_render(entities, game_map, fov_map)
-        console = console_renderer.write_to_console(console_bg)
+        abstract_game_surface = get_render(entities, game_map, fov_map)
+        console_surface = console.render()
 
-        display.blit(abstract_game_screen, (0, 0))  # Blit game
-        display.blit(console, (800, 0))  # Blit console
+        display.blit(abstract_game_surface, (0, 0))  # Blit game
+        display.blit(console_surface, (800, 0))  # Blit console
 
         pygame.display.flip()
         fov_recompute = False
@@ -107,7 +106,7 @@ def main():
 
                     break
             else:
-                message_log.add_message(Message('There is nothing here to pick up.', tcod.yellow))
+                console.add_message(Message('There is nothing here to pick up.', tcod.yellow))
 
         if show_inventory:
             previous_game_state = game_state
@@ -127,15 +126,14 @@ def main():
                 player_turn_results.extend(player.inventory.drop_item(item))
 
         if take_stairs and game_state == GameStates.PLAYERS_TURN:
-            print('stairs')
             for entity in entities:
                 if entity.stairs and entity.x == player.x and entity.y == player.y:
-                    entities = game_map.next_floor(player, message_log, constants)
+                    entities = game_map.next_floor(player, console.message_log, constants)
                     fov_map = initialize_fov(game_map)
                     fov_recompute = True
                     break
             else:
-                message_log.add_message(Message('There are no stairs here.', tcod.yellow))
+                console.add_message(Message('There are no stairs here.', tcod.yellow))
 
         if level_up:
             if level_up == 'hp':
@@ -185,7 +183,7 @@ def main():
             xp = player_turn_result.get('xp')
 
             if message:
-                message_log.add_message(message)
+                console.add_message(message)
 
             if dead_entity:
                 if dead_entity == player:
@@ -193,7 +191,7 @@ def main():
                 else:
                     message = kill_monster(dead_entity)
 
-                message_log.add_message(message)
+                console.add_message(message)
 
             if item_added:
                 entities.remove(item_added)
@@ -216,10 +214,10 @@ def main():
                     dequipped = equip_result.get('dequipped')
 
                     if equipped:
-                        message_log.add_message(Message('You equipped the {0}'.format(equipped.name)))
+                        console.add_message(Message('You equipped the {0}'.format(equipped.name)))
 
                     if dequipped:
-                        message_log.add_message(Message('You dequipped the {0}'.format(dequipped.name)))
+                        console.add_message(Message('You dequipped the {0}'.format(dequipped.name)))
 
                 game_state = GameStates.ENEMY_TURN
 
@@ -229,19 +227,19 @@ def main():
 
                 targeting_item = targeting
 
-                message_log.add_message(targeting_item.item.targeting_message)
+                console.add_message(targeting_item.item.targeting_message)
 
             if targeting_cancelled:
                 game_state = previous_game_state
 
-                message_log.add_message(Message('Targeting cancelled'))
+                console.add_message(Message('Targeting cancelled'))
 
             if xp:
                 leveled_up = player.level.add_xp(xp)
-                message_log.add_message(Message('You gain {0} experience points.'.format(xp)))
+                console.add_message(Message('You gain {0} experience points.'.format(xp)))
 
                 if leveled_up:
-                    message_log.add_message(Message(
+                    console.add_message(Message(
                         'Your battle skills grow stronger! You reached level {0}'.format(
                             player.level.current_level) + '!', tcod.yellow))
                     previous_game_state = game_state
@@ -257,7 +255,7 @@ def main():
                         dead_entity = enemy_turn_result.get('dead')
 
                         if message:
-                            message_log.add_message(message)
+                            console.add_message(message)
 
                         if dead_entity:
                             if dead_entity == player:
@@ -265,7 +263,7 @@ def main():
                             else:
                                 message = kill_monster(dead_entity)
 
-                            message_log.add_message(message)
+                            console.add_message(message)
 
                             if game_state == GameStates.PLAYER_DEAD:
                                 break
