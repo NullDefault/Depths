@@ -10,7 +10,7 @@ def save_game(player, entities, game_map, message_log, game_state):
         data_file['message_log'] = message_log
         data_file['game_state'] = game_state
 
-gi
+
 def load_game():
     if not os.path.isfile('savegame.dat'):
         raise FileNotFoundError
