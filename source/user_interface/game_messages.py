@@ -22,10 +22,11 @@ class MessageLog:
         self.width = width
         self.height = height
         self.max = max_msgs
+        self.max_msg_len = 44  # the console can fit 44 chars in a single line
 
     def add_message(self, message):
         # Split the message if necessary, among multiple lines
-        new_msg_lines = textwrap.wrap(message.text, self.width)
+        new_msg_lines = textwrap.wrap(message.text, self.max_msg_len)
 
         for line in new_msg_lines:
             # If the buffer is full, remove the first line to make room for the new one
@@ -46,6 +47,6 @@ class MessageRenderer:
         i = 0
         for message in self.log.messages:
             text_render = self.font.render(message.text, False, message.color, None)
-            surface.blit(text_render, (32, 32 + i*25))
+            surface.blit(text_render, (32, 32 + i*24))
             i = i + 1
         return surface

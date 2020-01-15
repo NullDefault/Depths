@@ -24,7 +24,7 @@ def get_constants():
     window_title = 'Depths_Game'
 
     screen_size = (1280, 768)
-    font_size = 24
+    font_size = 26
     map_width = 40
     map_height = 40
 
