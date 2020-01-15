@@ -27,9 +27,8 @@ def main():
     constants = get_constants()
 
     display = pygame.display.set_mode(constants['screen_size'])
-    console_bg = pygame.image.load('assets/ui_elements/console_background.png')
 
-    player, entities, game_map, message_log, game_state = get_game_variables(constants)
+    player, entities, game_map, message_log, game_state, console_renderer = get_game_variables(constants)
 
     fov_recompute = True
     fov_map = initialize_fov(game_map)
@@ -52,10 +51,12 @@ def main():
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'],
                           constants['fov_light_walls'], constants['fov_algorithm'])
 
+        console_bg = pygame.image.load('assets/ui_elements/console_background.png')
         abstract_game_screen = get_render(entities, game_map, fov_map)
+        console = console_renderer.write_to_console(console_bg)
 
-        display.blit(abstract_game_screen, (0, 0))
-        display.blit(console_bg, (800, 0))
+        display.blit(abstract_game_screen, (0, 0))  # Blit game
+        display.blit(console, (800, 0))  # Blit console
 
         pygame.display.flip()
         fov_recompute = False

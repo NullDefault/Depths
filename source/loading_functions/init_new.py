@@ -5,7 +5,7 @@ Notes:
 '''
 
 from source.game_entities.entity import Entity
-from source.user_interface.game_messages import MessageLog
+from source.user_interface.game_messages import MessageLog, MessageRenderer
 
 from source.data_banks.equipment_slots import EquipmentSlots
 from source.data_banks.render_order import RenderOrder
@@ -24,6 +24,7 @@ def get_constants():
     window_title = 'Depths_Game'
 
     screen_size = (1280, 768)
+    font_size = 24
     map_width = 40
     map_height = 40
 
@@ -41,6 +42,7 @@ def get_constants():
     constants = {
         'window_title': window_title,
         'screen_size': screen_size,
+        'font_size': font_size,
         'map_width': map_width,
         'map_height': map_height,
         'max_room_size': max_room_size,
@@ -76,8 +78,9 @@ def get_game_variables(constants):
     game_map.generate_map(constants['max_rooms'], constants['min_room_size'], constants['max_room_size'],
                           constants['map_width'], constants['map_height'], player, entities)
 
-    message_log = MessageLog(768, 256, 768)
+    message_log = MessageLog(800, 800, 15)
+    console_renderer = MessageRenderer(constants['font_size'], message_log)
 
     game_state = GameStates.PLAYERS_TURN
 
-    return player, entities, game_map, message_log, game_state
+    return player, entities, game_map, message_log, game_state, console_renderer
