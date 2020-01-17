@@ -33,18 +33,15 @@ def main():
     fov_recompute = True
     fov_map = initialize_fov(game_map)
 
+    main_action_menu_active = False
     game_state = GameStates.PLAYERS_TURN
-    previous_game_state = game_state
 
     action, mouse_action = {}, {}
-
-    targeting_item = None
 
     game_clock = pygame.time.Clock()
     game_frame_rate = 24
 
     while running:
-
         game_clock.tick(game_frame_rate)
 
         if fov_recompute:
@@ -52,7 +49,7 @@ def main():
                           constants['fov_light_walls'], constants['fov_algorithm'])
 
         abstract_game_surface = get_render(entities, game_map, fov_map)
-        console_surface = console.render()
+        console_surface = console.render(main_action_menu_active)
 
         display.blit(abstract_game_surface, (0, 0))  # Blit game
         display.blit(console_surface, (800, 0))  # Blit console
@@ -62,18 +59,10 @@ def main():
 
         move = action.get('move')
         pickup = action.get('pickup')
-        show_inventory = action.get('show_inventory')
-        drop_inventory = action.get('drop_inventory')
-        inventory_index = action.get('inventory_index')
         take_stairs = action.get('take_stairs')
         fullscreen = action.get('fullscreen')
-        level_up = action.get('level_up')
-        show_character_screen = action.get('show_character_screen')
         wait = action.get('wait')
-        quit_game = action.get('exit')
-
-        left_click = mouse_action.get('left_click')
-        right_click = mouse_action.get('right_click')
+        menu_mode_changed = action.get('menu_mode_changed')
 
         player_turn_results = []
 
@@ -95,6 +84,16 @@ def main():
 
                 game_state = GameStates.ENEMY_TURN
 
+        elif take_stairs and game_state == GameStates.PLAYERS_TURN:
+            for entity in entities:
+                if entity.stairs and entity.x == player.x and entity.y == player.y:
+                    entities = game_map.next_floor(player, console.message_log, constants)
+                    fov_map = initialize_fov(game_map)
+                    fov_recompute = True
+                    break
+            else:
+                console.add_message(Message('There are no stairs here.', tcod.yellow))
+
         elif wait:
             game_state = GameStates.ENEMY_TURN
 
@@ -108,78 +107,17 @@ def main():
             else:
                 console.add_message(Message('There is nothing here to pick up.', tcod.yellow))
 
-        if show_inventory:
-            previous_game_state = game_state
-            game_state = GameStates.SHOW_INVENTORY
+        elif menu_mode_changed and game_state == GameStates.PLAYERS_TURN:
+            player_turn_results.append({'menu_mode_changed': True})
 
-        if drop_inventory:
-            previous_game_state = game_state
-            game_state = GameStates.DROP_INVENTORY
-
-        if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < len(
-                player.inventory.items):
-            item = player.inventory.items[inventory_index]
-
-            if game_state == GameStates.SHOW_INVENTORY:
-                player_turn_results.extend(player.inventory.use(item, entities=entities, fov_map=fov_map))
-            elif game_state == GameStates.DROP_INVENTORY:
-                player_turn_results.extend(player.inventory.drop_item(item))
-
-        if take_stairs and game_state == GameStates.PLAYERS_TURN:
-            for entity in entities:
-                if entity.stairs and entity.x == player.x and entity.y == player.y:
-                    entities = game_map.next_floor(player, console.message_log, constants)
-                    fov_map = initialize_fov(game_map)
-                    fov_recompute = True
-                    break
-            else:
-                console.add_message(Message('There are no stairs here.', tcod.yellow))
-
-        if level_up:
-            if level_up == 'hp':
-                player.combat_data.base_max_hp += 20
-                player.combat_data.hp += 20
-            elif level_up == 'str':
-                player.combat_data.base_attack += 1
-            elif level_up == 'def':
-                player.combat_data.base_defense += 1
-
-            game_state = previous_game_state
-
-        if show_character_screen:
-            previous_game_state = game_state
-            game_state = GameStates.CHARACTER_SCREEN
-
-        if game_state == GameStates.TARGETING:
-            if left_click:
-                target_x, target_y = left_click
-
-                item_use_results = player.inventory.use(targeting_item, entities=entities, fov_map=fov_map,
-                                                        target_x=target_x, target_y=target_y)
-                player_turn_results.extend(item_use_results)
-            elif right_click:
-                player_turn_results.append({'targeting_cancelled': True})
-
-        if fullscreen:
+        elif fullscreen:
             display = pygame.display.set_mode(constants['screen_size'], pygame.FULLSCREEN)
-
-        if quit_game:
-            if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_SCREEN):
-                game_state = previous_game_state
-            elif game_state == GameStates.TARGETING:
-                player_turn_results.append({'targeting_cancelled': True})
-            else:
-                running = False
 
         for player_turn_result in player_turn_results:
             message = player_turn_result.get('message')
             dead_entity = player_turn_result.get('dead')
+            menu_mode_changed = player_turn_result.get('menu_mode_changed')
             item_added = player_turn_result.get('item_added')
-            item_consumed = player_turn_result.get('consumed')
-            item_dropped = player_turn_result.get('item_dropped')
-            equip = player_turn_result.get('equip')
-            targeting = player_turn_result.get('targeting')
-            targeting_cancelled = player_turn_result.get('targeting_cancelled')
             xp = player_turn_result.get('xp')
 
             if message:
@@ -193,46 +131,14 @@ def main():
 
                 console.add_message(message)
 
+            if menu_mode_changed:
+                main_action_menu_active = not main_action_menu_active
+                game_state = GameStates.ACTION_MENU
+
             if item_added:
                 entities.remove(item_added)
 
                 game_state = GameStates.ENEMY_TURN
-
-            if item_consumed:
-                game_state = GameStates.ENEMY_TURN
-
-            if item_dropped:
-                entities.append(item_dropped)
-
-                game_state = GameStates.ENEMY_TURN
-
-            if equip:
-                equip_results = player.equipment.toggle_equip(equip)
-
-                for equip_result in equip_results:
-                    equipped = equip_result.get('equipped')
-                    dequipped = equip_result.get('dequipped')
-
-                    if equipped:
-                        console.add_message(Message('You equipped the {0}'.format(equipped.name)))
-
-                    if dequipped:
-                        console.add_message(Message('You dequipped the {0}'.format(dequipped.name)))
-
-                game_state = GameStates.ENEMY_TURN
-
-            if targeting:
-                previous_game_state = GameStates.PLAYERS_TURN
-                game_state = GameStates.TARGETING
-
-                targeting_item = targeting
-
-                console.add_message(targeting_item.item.targeting_message)
-
-            if targeting_cancelled:
-                game_state = previous_game_state
-
-                console.add_message(Message('Targeting cancelled'))
 
             if xp:
                 leveled_up = player.level.add_xp(xp)
@@ -242,8 +148,6 @@ def main():
                     console.add_message(Message(
                         'Your battle skills grow stronger! You reached level {0}'.format(
                             player.level.current_level) + '!', tcod.yellow))
-                    previous_game_state = game_state
-                    game_state = GameStates.LEVEL_UP
 
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
@@ -273,8 +177,24 @@ def main():
             else:
                 game_state = GameStates.PLAYERS_TURN
 
-        for e in pygame.event.get():
-            action, mouse_action = process_event(e, game_state)
+        e = pygame.event.wait()
+        action, mouse_action = process_event(e, game_state)
+
+        if game_state == GameStates.ACTION_MENU:
+            menu_action_result = console.handle_am_input(e)
+            if menu_action_result is None:
+                pass
+            elif menu_action_result == 'Inventory':
+                pass
+            elif menu_action_result == 'Save':
+                pass
+            elif menu_action_result == 'Character':
+                pass
+            elif menu_action_result == 'Quit':
+                running = False
+            elif menu_action_result == 'quit_menu':
+                main_action_menu_active = not main_action_menu_active
+                game_state = GameStates.PLAYERS_TURN
 
 
 if __name__ == '__main__':

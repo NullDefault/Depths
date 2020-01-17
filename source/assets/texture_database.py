@@ -39,6 +39,8 @@ textures = {
 
     # UI
     'console_frame': image.load(join('assets', 'ui_elements', 'console_frame.png')),
+    'main_action_menu_frame': image.load(join('assets', 'ui_elements', 'action_menu_frame.png')),
+    'menu_cursor': image.load(join('assets', 'ui_elements', 'menu_cursor.png')),
     'xp_bar': image.load(join('assets', 'ui_elements', 'xp_bar.png')),
     'xp_ui': image.load(join('assets', 'ui_elements', 'xp_ui.png')),
     'hp_ui': image.load(join('assets', 'ui_elements', 'hp_ui.png')),

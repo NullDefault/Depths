@@ -5,9 +5,10 @@ Notes:
 '''
 
 from source.user_interface.game_messages import MessageRenderer, MessageLog
+from source.user_interface.action_menu import ActionMenu
 from source.assets.texture_database import textures
 import tcod
-from pygame import Surface, draw
+from pygame import Surface, draw, key, KEYDOWN
 
 frame = textures['console_frame']
 console_size = (800, 800)
@@ -27,17 +28,35 @@ heart_full = textures['heart_full']
 heart_half = textures['heart_half']
 heart_empty = textures['heart_empty']
 
+main_action_menu_size = (400, 150)
+main_actions = {
+    0: 'Inventory',
+    1: 'Save',
+    2: 'Character',
+    3: 'Quit'
+}
+main_action_menu_loc = (32, 464)
+main_action_menu_frame = textures['main_action_menu_frame']
+
 
 class Console:
     def __init__(self, font_size, player):
         self.message_log = MessageLog(800, 800, 15)
+        self.main_action_menu = ActionMenu(main_action_menu_size, main_actions, main_action_menu_frame)
         self.renderer = MessageRenderer(font_size, self.message_log)
         self.player = player
 
     def add_message(self, message):
         self.message_log.add_message(message)
 
-    def render(self):
+    def handle_am_input(self, e):
+        ship_back = None
+        if e.type == KEYDOWN:
+            ship_back = self.main_action_menu.input_master.process_input(key.name(e.key))
+        if ship_back:
+            return ship_back
+
+    def render(self, action_menu_active):
         surface = Surface(console_size)
         surface.blit(frame, frame_loc)
         surface.blit(hp_ui, hp_loc)
@@ -45,6 +64,7 @@ class Console:
         self.renderer.write_to_console(surface)  # Writes game messages
         self.draw_health(surface)
         self.draw_xp(surface)
+        self.main_action_menu.render_on(surface, main_action_menu_loc, action_menu_active)
         return surface
 
     def draw_health(self, surface):
