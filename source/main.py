@@ -34,6 +34,8 @@ def main():
     fov_map = initialize_fov(game_map)
 
     main_action_menu_active = False
+    inventory_active = False
+    character_profile_active = False
     game_state = GameStates.PLAYERS_TURN
 
     action, mouse_action = {}, {}
@@ -49,7 +51,7 @@ def main():
                           constants['fov_light_walls'], constants['fov_algorithm'])
 
         abstract_game_surface = get_render(entities, game_map, fov_map)
-        console_surface = console.render(main_action_menu_active)
+        console_surface = console.render(main_action_menu_active, inventory_active, character_profile_active)
 
         display.blit(abstract_game_surface, (0, 0))  # Blit game
         display.blit(console_surface, (800, 0))  # Blit console
@@ -185,7 +187,8 @@ def main():
             if menu_action_result is None:
                 pass
             elif menu_action_result == 'Inventory':
-                pass
+                inventory_active = True
+                game_state = GameStates.INVENTORY_MENU
             elif menu_action_result == 'Save':
                 pass
             elif menu_action_result == 'Character':
@@ -195,6 +198,16 @@ def main():
             elif menu_action_result == 'quit_menu':
                 main_action_menu_active = not main_action_menu_active
                 game_state = GameStates.PLAYERS_TURN
+
+        elif game_state == GameStates.INVENTORY_MENU:
+            inventory_selection = console.handle_inventory_input(e)
+            if inventory_selection is 'quit_menu':
+                inventory_active = False
+                game_state = GameStates.ACTION_MENU
+            if inventory_selection:
+                results = player.inventory.use(inventory_selection)
+                msg = results.get('message')
+                console.add_message(msg)
 
 
 if __name__ == '__main__':

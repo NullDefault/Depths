@@ -6,6 +6,7 @@ Notes:
 
 from source.user_interface.game_messages import MessageRenderer, MessageLog
 from source.user_interface.action_menu import ActionMenu
+from source.user_interface.inventory_menu import InventoryMenu
 from source.assets.texture_database import textures
 import tcod
 from pygame import Surface, draw, key, KEYDOWN
@@ -36,13 +37,19 @@ main_actions = {
     3: 'Quit'
 }
 main_action_menu_loc = (32, 464)
-main_action_menu_frame = textures['main_action_menu_frame']
+
+inventory_menu_size = (400, 500)
+inventory_menu_loc = (16, 392)
+
+profile_menu_size = (400, 500)
+profile_loc = (32, 464)
 
 
 class Console:
     def __init__(self, font_size, player):
         self.message_log = MessageLog(800, 800, 15)
-        self.main_action_menu = ActionMenu(main_action_menu_size, main_actions, main_action_menu_frame)
+        self.main_action_menu = ActionMenu(main_action_menu_size, main_actions)
+        self.inventory_menu = InventoryMenu(player.inventory, inventory_menu_size)
         self.renderer = MessageRenderer(font_size, self.message_log)
         self.player = player
 
@@ -56,15 +63,30 @@ class Console:
         if ship_back:
             return ship_back
 
-    def render(self, action_menu_active):
+    def handle_inventory_input(self, e):
+        ship_back = None
+        if e.type == KEYDOWN:
+            ship_back = self.inventory_menu.input_master.process_input(key.name(e.key))
+        if ship_back:
+            return ship_back
+
+    def render(self, action_menu_active, inventory_active, profile_active):
         surface = Surface(console_size)
         surface.blit(frame, frame_loc)
         surface.blit(hp_ui, hp_loc)
         surface.blit(xp_ui, xp_loc)
         self.renderer.write_to_console(surface)  # Writes game messages
-        self.draw_health(surface)
-        self.draw_xp(surface)
-        self.main_action_menu.render_on(surface, main_action_menu_loc, action_menu_active)
+        if not inventory_active and not profile_active:
+            self.draw_health(surface)
+            self.draw_xp(surface)
+        if action_menu_active:
+            self.main_action_menu.render_on(surface, main_action_menu_loc)
+
+        if inventory_active:
+            self.inventory_menu.render_on(surface, inventory_menu_loc)
+        elif profile_active:
+            self.character_profile.render_on(surface, profile_loc)
+
         return surface
 
     def draw_health(self, surface):

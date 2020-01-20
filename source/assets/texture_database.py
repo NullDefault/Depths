@@ -40,7 +40,10 @@ textures = {
     # UI
     'console_frame': image.load(join('assets', 'ui_elements', 'console_frame.png')),
     'main_action_menu_frame': image.load(join('assets', 'ui_elements', 'action_menu_frame.png')),
+    'inventory_menu_frame': image.load(join('assets', 'ui_elements', 'inventory_menu_frame.png')),
+    'inventory_black_bg': image.load(join('assets', 'ui_elements', 'inventory_black_bg.png')),
     'menu_cursor': image.load(join('assets', 'ui_elements', 'menu_cursor.png')),
+    'inventory_cursor': image.load(join('assets', 'ui_elements', 'inventory_cursor.png')),
     'xp_bar': image.load(join('assets', 'ui_elements', 'xp_bar.png')),
     'xp_ui': image.load(join('assets', 'ui_elements', 'xp_ui.png')),
     'hp_ui': image.load(join('assets', 'ui_elements', 'hp_ui.png')),
