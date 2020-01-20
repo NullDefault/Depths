@@ -10,7 +10,7 @@ import math
 import pygame
 import tcod
 
-from source.components.item import Item
+from source.game_entities.components.item import Item
 from source.data_banks.render_order import RenderOrder
 from source.assets.texture_database import get_sprite
 

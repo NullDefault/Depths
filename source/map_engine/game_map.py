@@ -7,10 +7,10 @@ Notes:
 import tcod
 from random import randint
 
-from source.components.ai import BasicCreature
-from source.components.combat_data import CombatData
-from source.components.equippable import Equippable
-from source.components.item import Item
+from source.game_entities.components.ai import BasicCreature
+from source.game_entities.components.combat_data import CombatData
+from source.game_entities.components.equippable import Equippable
+from source.game_entities.components.item import Item
 from source.map_engine.map_rect import MapRect
 
 from source.user_interface.game_messages import Message

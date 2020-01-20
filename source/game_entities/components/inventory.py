@@ -72,6 +72,6 @@ class Inventory:
 
         self.remove_item(item)
         results.append({'item_dropped': item, 'message': Message('You dropped the {0}'.format(item.name),
-                                                                 libtcod.yellow)})
+                                                                 tcod.yellow)})
 
         return results

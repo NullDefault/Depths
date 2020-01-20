@@ -6,7 +6,7 @@ Notes:
 
 import tcod
 
-from source.components.ai import ConfusedCreature
+from source.game_entities.components.ai import ConfusedCreature
 from source.user_interface.game_messages import Message
 
 

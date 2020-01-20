@@ -37,14 +37,78 @@ def main():
     inventory_active = False
     character_profile_active = False
     game_state = GameStates.PLAYERS_TURN
-
-    action, mouse_action = {}, {}
+    next_game_state = None
 
     game_clock = pygame.time.Clock()
     game_frame_rate = 24
 
     while running:
+
+        if game_state is not GameStates.PLAYER_DEAD and next_game_state:
+            game_state = next_game_state
+            next_game_state = None
+
         game_clock.tick(game_frame_rate)
+
+        e = pygame.event.wait()
+        action, mouse_action = process_event(e, game_state)
+
+        if game_state == GameStates.ACTION_MENU:
+            menu_action_result = console.handle_am_input(e)
+            if menu_action_result is None:
+                pass
+            elif menu_action_result == 'Inventory':
+                inventory_active = True
+                game_state = GameStates.INVENTORY_MENU
+            elif menu_action_result == 'Save':
+                pass
+            elif menu_action_result == 'Character':
+                pass
+            elif menu_action_result == 'Quit':
+                running = False
+            elif menu_action_result == 'quit_menu':
+                main_action_menu_active = not main_action_menu_active
+                game_state = GameStates.PLAYERS_TURN
+
+        elif game_state == GameStates.INVENTORY_MENU:
+            inventory_selection = console.handle_inventory_input(e)
+            if inventory_selection is 'quit_menu':
+                inventory_active = False
+                game_state = GameStates.ACTION_MENU
+            elif inventory_selection:
+                temp = player.inventory.use(inventory_selection)
+                results = temp[0]
+                try:
+                    equip = results['equip']
+                    equip_result = player.equipment.toggle_equip(equip)
+
+                    for message in equip_result:
+                        console.add_message(message)
+
+                    game_state = GameStates.ENEMY_TURN
+                    next_game_state = GameStates.INVENTORY_MENU
+                except KeyError:
+                    equip = None
+                try:
+                    targeting = results['targeting']
+                except KeyError:
+                    targeting = None
+
+                try:
+                    consumed = results['consumed']
+
+                    console.inventory_menu.decrement_cursor()
+
+                    game_state = GameStates.ENEMY_TURN
+                    next_game_state = GameStates.INVENTORY_MENU
+                except KeyError:
+                    consumed = None
+
+                try:
+                    message = results['message']
+                    console.add_message(message)
+                except KeyError:
+                    message = None
 
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'],
@@ -139,7 +203,6 @@ def main():
 
             if item_added:
                 entities.remove(item_added)
-
                 game_state = GameStates.ENEMY_TURN
 
             if xp:
@@ -179,35 +242,6 @@ def main():
             else:
                 game_state = GameStates.PLAYERS_TURN
 
-        e = pygame.event.wait()
-        action, mouse_action = process_event(e, game_state)
-
-        if game_state == GameStates.ACTION_MENU:
-            menu_action_result = console.handle_am_input(e)
-            if menu_action_result is None:
-                pass
-            elif menu_action_result == 'Inventory':
-                inventory_active = True
-                game_state = GameStates.INVENTORY_MENU
-            elif menu_action_result == 'Save':
-                pass
-            elif menu_action_result == 'Character':
-                pass
-            elif menu_action_result == 'Quit':
-                running = False
-            elif menu_action_result == 'quit_menu':
-                main_action_menu_active = not main_action_menu_active
-                game_state = GameStates.PLAYERS_TURN
-
-        elif game_state == GameStates.INVENTORY_MENU:
-            inventory_selection = console.handle_inventory_input(e)
-            if inventory_selection is 'quit_menu':
-                inventory_active = False
-                game_state = GameStates.ACTION_MENU
-            if inventory_selection:
-                results = player.inventory.use(inventory_selection)
-                msg = results.get('message')
-                console.add_message(msg)
 
 
 if __name__ == '__main__':

@@ -5,6 +5,8 @@ Notes:
 '''
 
 from source.data_banks.equipment_slots import EquipmentSlots
+from source.user_interface.game_messages import Message
+import tcod
 
 
 class Equipment:
@@ -56,22 +58,22 @@ class Equipment:
         if slot == EquipmentSlots.MAIN_HAND:
             if self.main_hand == equippable_entity:
                 self.main_hand = None
-                results.append({'dequipped': equippable_entity})
+                results.append(Message(('Dequipped ' + equippable_entity.name), tcod.lighter_blue))
             else:
                 if self.main_hand:
-                    results.append({'dequipped': self.main_hand})
+                    results.append(Message(('Dequipped ' + self.main_hand.name), tcod.lighter_blue))
 
                 self.main_hand = equippable_entity
-                results.append({'equipped': equippable_entity})
+                results.append(Message(('Equipped ' + equippable_entity.name), tcod.lighter_blue))
         elif slot == EquipmentSlots.OFF_HAND:
             if self.off_hand == equippable_entity:
                 self.off_hand = None
-                results.append({'dequipped': equippable_entity})
+                results.append(Message(('Dequipped ' + equippable_entity.name), tcod.lighter_blue))
             else:
                 if self.off_hand:
-                    results.append({'dequipped': self.off_hand})
+                    results.append(Message(('Dequipped ' + self.off_hand.name), tcod.lighter_blue))
 
                 self.off_hand = equippable_entity
-                results.append({'equipped': equippable_entity})
+                results.append(Message(('Equipped ' + equippable_entity.name), tcod.lighter_blue))
 
         return results

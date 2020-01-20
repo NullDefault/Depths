@@ -36,17 +36,24 @@ textures = {
     'corpse': image.load(join('assets', 'misc', 'corpse.png')),
     'black_bg': image.load(join('assets', 'misc', 'black_bg.png')),
     'background': image.load(join('assets', 'ui_elements', 'background.png')),
+    'inventory_black_bg': image.load(join('assets', 'ui_elements', 'inventory_black_bg.png')),
 
-    # UI
+    # UI FRAMES
     'console_frame': image.load(join('assets', 'ui_elements', 'console_frame.png')),
     'main_action_menu_frame': image.load(join('assets', 'ui_elements', 'action_menu_frame.png')),
     'inventory_menu_frame': image.load(join('assets', 'ui_elements', 'inventory_menu_frame.png')),
-    'inventory_black_bg': image.load(join('assets', 'ui_elements', 'inventory_black_bg.png')),
+
+    # UI ICONS
     'menu_cursor': image.load(join('assets', 'ui_elements', 'menu_cursor.png')),
     'inventory_cursor': image.load(join('assets', 'ui_elements', 'inventory_cursor.png')),
+
+    'off_hand_icon': image.load(join('assets', 'ui_elements', 'off_hand_icon.png')),
+    'main_hand_icon': image.load(join('assets', 'ui_elements', 'main_hand_icon.png')),
+
     'xp_bar': image.load(join('assets', 'ui_elements', 'xp_bar.png')),
     'xp_ui': image.load(join('assets', 'ui_elements', 'xp_ui.png')),
     'hp_ui': image.load(join('assets', 'ui_elements', 'hp_ui.png')),
+
     'heart_full': image.load(join('assets', 'ui_elements', 'status_elements', 'heart_full.png')),
     'heart_half': image.load(join('assets', 'ui_elements', 'status_elements', 'heart_half.png')),
     'heart_empty': image.load(join('assets', 'ui_elements', 'status_elements', 'heart_empty.png'))

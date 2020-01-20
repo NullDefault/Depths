@@ -13,11 +13,11 @@ from source.data_banks.game_states import GameStates
 
 from source.map_engine.game_map import GameMap
 
-from source.components.combat_data import CombatData
-from source.components.equippable import Equippable
-from source.components.equipment import Equipment
-from source.components.inventory import Inventory
-from source.components.level import Level
+from source.game_entities.components.combat_data import CombatData
+from source.game_entities.components.equippable import Equippable
+from source.game_entities.components.equipment import Equipment
+from source.game_entities.components.inventory import Inventory
+from source.game_entities.components.level import Level
 
 
 def get_constants():
@@ -60,16 +60,16 @@ def get_constants():
 
 def get_game_variables(constants):
     fighter_component = CombatData(hp=100, defense=1, attack=2)
-    inventory_component = Inventory(26)
+    inventory_component = Inventory(36)
     level_component = Level()
     equipment_component = Equipment()
-
     player = Entity(0, 0, 'player', 'Player', blocks=True, render_order=RenderOrder.ACTOR,
                     combat_data=fighter_component, inventory=inventory_component, level=level_component,
                     equipment=equipment_component)
     entities = [player]
 
     equippable_component = Equippable(EquipmentSlots.MAIN_HAND, attack_bonus=2)
+
     dagger = Entity(0, 0, 'dagger', 'Dagger', equippable=equippable_component)
     player.inventory.add_item(dagger)
     player.equipment.toggle_equip(dagger)
