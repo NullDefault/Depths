@@ -13,7 +13,7 @@ from source.game_entities.components.equippable import Equippable
 from source.game_entities.components.item import Item
 from source.map_engine.map_rect import MapRect
 
-from source.user_interface.game_messages import Message
+from source.rendering_files.user_interface.game_messages import Message
 
 from source.data_banks.equipment_slots import EquipmentSlots
 from source.data_banks.item_functions import heal, cast_fireball, cast_confuse, cast_lightning
@@ -24,7 +24,7 @@ from source.data_banks.render_order import RenderOrder
 
 from source.misc_functions.random_utilities import from_dungeon_level, random_choice_from_dict
 
-from source.game_entities.stairs import Stairs
+from source.game_entities.structures.stairs import Stairs
 from source.game_entities.entity import Entity
 
 

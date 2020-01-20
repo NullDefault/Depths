@@ -11,7 +11,7 @@ from source.data_banks.render_order import RenderOrder
 
 from source.assets.texture_database import textures
 
-from source.user_interface.game_messages import Message
+from source.rendering_files.user_interface.game_messages import Message
 
 
 def kill_player(player):

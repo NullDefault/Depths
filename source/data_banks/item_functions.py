@@ -7,7 +7,7 @@ Notes:
 import tcod
 
 from source.game_entities.components.ai import ConfusedCreature
-from source.user_interface.game_messages import Message
+from source.rendering_files.user_interface.game_messages import Message
 
 
 def heal(*args, **kwargs):

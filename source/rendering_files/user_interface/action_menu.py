@@ -4,7 +4,7 @@ Function: UI Element that allows the user to make a selection from a variety of 
 Notes:
 '''
 
-from source.user_interface.input_handler import InputHandler
+from source.rendering_files.user_interface.main_action_menu_handler import MainActionMenuHandler
 from source.assets.texture_database import textures
 from pygame import font
 from os.path import join
@@ -20,7 +20,7 @@ class ActionMenu:
         self.actions = actions  # Dictionary with all the possible actions. Key is the index, value is the action.
         self.frame = textures['main_action_menu_frame']
         self.cursor = 0
-        self.input_master = InputHandler(self)
+        self.input_master = MainActionMenuHandler(self)
 
     def render_on(self, surface, loc):
         surface.blit(self.frame, loc)

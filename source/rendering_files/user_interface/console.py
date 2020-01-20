@@ -4,9 +4,9 @@ Function: Contains functions necessary to render UI elements on the screen, incl
 Notes:
 '''
 
-from source.user_interface.game_messages import MessageRenderer, MessageLog
-from source.user_interface.action_menu import ActionMenu
-from source.user_interface.inventory_menu import InventoryMenu
+from source.rendering_files.user_interface.game_messages import MessageRenderer, MessageLog
+from source.rendering_files.user_interface.action_menu import ActionMenu
+from source.rendering_files.user_interface.inventory_menu import InventoryMenu
 from source.assets.texture_database import textures
 import tcod
 from pygame import Surface, draw, key, KEYDOWN

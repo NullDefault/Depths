@@ -5,7 +5,7 @@ Notes:
 '''
 
 from source.data_banks.equipment_slots import EquipmentSlots
-from source.user_interface.game_messages import Message
+from source.rendering_files.user_interface.game_messages import Message
 import tcod
 
 

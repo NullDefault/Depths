@@ -11,10 +11,10 @@ from source.game_entities.entity import get_blocking_entities_at_location
 
 from source.loading_functions.init_new import get_constants, get_game_variables
 
-from source.user_interface.input_functions import process_event
-from source.user_interface.game_messages import Message
+from source.rendering_files.user_interface.input_functions import process_event
+from source.rendering_files.user_interface.game_messages import Message
 
-from source.render_functions.rendering import recompute_fov, initialize_fov, get_render
+from source.rendering_files.rendering import recompute_fov, initialize_fov, get_render
 
 from source.misc_functions.death_functions import kill_monster, kill_player
 

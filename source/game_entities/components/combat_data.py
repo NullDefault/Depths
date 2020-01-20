@@ -4,7 +4,7 @@ Function: Component that takes care of combat functionality and holds combat rel
 Notes:
 '''
 
-from source.user_interface.game_messages import Message
+from source.rendering_files.user_interface.game_messages import Message
 import tcod
 
 

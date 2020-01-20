@@ -5,7 +5,7 @@ Notes:
 '''
 
 from source.game_entities.entity import Entity
-from source.user_interface.console import Console
+from source.rendering_files.user_interface.console import Console
 
 from source.data_banks.equipment_slots import EquipmentSlots
 from source.data_banks.render_order import RenderOrder
