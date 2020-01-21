@@ -124,8 +124,8 @@ class GameMap:
             'sword': from_dungeon_level([[5, 4]], self.dungeon_level),
             'shield': from_dungeon_level([[15, 8]], self.dungeon_level),
             'lightning_scroll': from_dungeon_level([[25, 4]], self.dungeon_level),
-            'fireball_scroll': from_dungeon_level([[25, 6]], self.dungeon_level),
-            'confusion_scroll': from_dungeon_level([[10, 2]], self.dungeon_level)
+            'fireball_scroll': 55, #from_dungeon_level([[25, 6]], self.dungeon_level),
+            'confusion_scroll': 55, #from_dungeon_level([[10, 2]], self.dungeon_level)
         }
 
         for i in range(number_of_monsters):
@@ -209,9 +209,9 @@ class GameMap:
 
         return False
 
-    def next_floor(self, player, message_log, constants):
+    def next_floor(self, player, crosshair, message_log, constants):
         self.dungeon_level += 1
-        entities = [player]
+        entities = [player, crosshair]
 
         self.tiles = self.initialize_tiles()
         self.generate_map(constants['max_rooms'], constants['min_room_size'], constants['max_room_size'],

@@ -17,8 +17,9 @@ from source.assets.texture_database import get_sprite
 
 def get_blocking_entities_at_location(entities, destination_x, destination_y):
     for entity in entities:
-        if entity.blocks and entity.x == destination_x and entity.y == destination_y:
-            return entity
+        if entity.blocks:
+            if entity.rect.collidepoint(destination_x * 16, destination_y * 16):
+                return entity
 
     return None
 
@@ -33,7 +34,8 @@ class Entity(pygame.sprite.Sprite):
                  stairs=None,
                  level=None,
                  equipment=None,
-                 equippable=None):
+                 equippable=None,
+                 crosshair=None):
 
         self.name = name
 
@@ -54,6 +56,7 @@ class Entity(pygame.sprite.Sprite):
         self.level = level
         self.equipment = equipment
         self.equippable = equippable
+        self.crosshair = crosshair
 
         if self.combat_data:
             self.combat_data.owner = self
@@ -83,6 +86,9 @@ class Entity(pygame.sprite.Sprite):
                 item = Item()
                 self.item = item
                 self.item.owner = self
+
+        if self.crosshair:
+            self.crosshair.owner = self
 
     def move(self, dx, dy):
         self.x += dx

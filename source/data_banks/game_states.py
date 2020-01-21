@@ -13,4 +13,5 @@ class GameStates(Enum):
     PLAYER_DEAD = 3
     ACTION_MENU = 4
     INVENTORY_MENU = 5
+    TARGETING = 6
 

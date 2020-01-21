@@ -12,3 +12,4 @@ class RenderOrder(Enum):
     CORPSE = 2
     ITEM = 3
     ACTOR = 4
+    CROSSHAIR = 5

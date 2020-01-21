@@ -19,7 +19,7 @@ floor_visible = textures['floor_visible']
 floor_invisible = textures['floor_invisible']
 
 
-def get_render(entities, game_map, fov_map):
+def get_render(entities, game_map, fov_map, targeting_ui_active):
     game_screen = Surface((800, 800))
     game_screen.blit(textures['background'], (0, 0))
     entities_in_render_order = sorted(entities, key=lambda n: n.render_order.value)
@@ -50,10 +50,16 @@ def get_render(entities, game_map, fov_map):
 
     for entity in entities_in_render_order:
         x, y = entity.x, entity.y
-        visible = tcod.map_is_in_fov(fov_map, x, y)
-        if visible:
-            game_screen.blit(black_bg, (x * RENDER_SCALE, y * RENDER_SCALE))
-            game_screen.blit(entity.image, (x * RENDER_SCALE, y * RENDER_SCALE))
+        if entity.crosshair:
+            print (str(x) +'/'+ str(y))
+            visible = targeting_ui_active
+            if visible:
+                game_screen.blit(entity.image, (x * RENDER_SCALE, y * RENDER_SCALE))
+        else:
+            visible = tcod.map_is_in_fov(fov_map, x, y)
+            if visible:
+                game_screen.blit(black_bg, (x * RENDER_SCALE, y * RENDER_SCALE))
+                game_screen.blit(entity.image, (x * RENDER_SCALE, y * RENDER_SCALE))
 
     return game_screen
 

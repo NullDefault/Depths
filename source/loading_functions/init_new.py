@@ -18,6 +18,7 @@ from source.game_entities.components.equippable import Equippable
 from source.game_entities.components.equipment import Equipment
 from source.game_entities.components.inventory import Inventory
 from source.game_entities.components.level import Level
+from source.game_entities.components.crosshair import Crosshair
 
 
 def get_constants():
@@ -66,13 +67,18 @@ def get_game_variables(constants):
     player = Entity(0, 0, 'player', 'Player', blocks=True, render_order=RenderOrder.ACTOR,
                     combat_data=fighter_component, inventory=inventory_component, level=level_component,
                     equipment=equipment_component)
-    entities = [player]
 
     equippable_component = Equippable(EquipmentSlots.MAIN_HAND, attack_bonus=2)
+
+    crosshair_component = Crosshair(player)
+    crosshair = Entity(player.x, player.y, 'crosshair', 'Crosshair', blocks=False, render_order=RenderOrder.CROSSHAIR,
+                       crosshair=crosshair_component)
 
     dagger = Entity(0, 0, 'dagger', 'Dagger', equippable=equippable_component)
     player.inventory.add_item(dagger)
     player.equipment.toggle_equip(dagger)
+
+    entities = [player, crosshair]
 
     game_map = GameMap(constants['map_width'], constants['map_height'])
     game_map.generate_map(constants['max_rooms'], constants['min_room_size'], constants['max_room_size'],
@@ -82,4 +88,4 @@ def get_game_variables(constants):
 
     game_state = GameStates.PLAYERS_TURN
 
-    return player, entities, game_map, game_state, console
+    return player, entities, crosshair, game_map, game_state, console

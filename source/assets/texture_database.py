@@ -49,6 +49,8 @@ textures = {
     'menu_cursor': image.load(join('assets', 'ui_elements', 'icons', 'menu_cursor.png')),
     'inventory_cursor': image.load(join('assets', 'ui_elements', 'icons', 'inventory_cursor.png')),
 
+    'crosshair': image.load(join('assets', 'ui_elements', 'icons', 'crosshair.png')),
+
     'off_hand_icon': image.load(join('assets', 'ui_elements', 'icons', 'off_hand_icon.png')),
     'main_hand_icon': image.load(join('assets', 'ui_elements', 'icons', 'main_hand_icon.png')),
 

@@ -23,6 +23,8 @@ def process_event(event, game_state):
 def handle_keys(key, game_state):
     if game_state == GameStates.PLAYERS_TURN:
         return handle_player_turn_keys(key)
+    if game_state == GameStates.TARGETING:
+        return handle_crosshair_keys(key)
     return {}
 
 
@@ -75,4 +77,30 @@ def handle_player_turn_keys(key):
     return {}
 
 
+def handle_crosshair_keys(key):
+    # Movement keys
+    if key == 'up' or key == 'w' or key == '[8]':  # Note : [i] correspond to num pad keys
+        return {'move': (0, -1)}
+    elif key == 'down' or key == 's' or key == '[2]':
+        return {'move': (0, 1)}
+    elif key == 'left' or key == 'a' or key == '[4]':
+        return {'move': (-1, 0)}
+    elif key == 'right' or key == 'd' or key == '[6]':
+        return {'move': (1, 0)}
 
+    elif key == 'q' or key == '[7]':  # Up Left
+        return {'move': (-1, -1)}
+    elif key == 'e' or key == '[9]':  # Up Right
+        return {'move': (1, -1)}
+    elif key == 'x' or key == '[1]':  # Down Left
+        return {'move': (-1, 1)}
+    elif key == 'c' or key == '[3]':  # Down Right
+        return {'move': (1, 1)}
+
+    elif key == 'return':
+        return {'target_selected': True}
+    elif key == 'escape':
+        # Exit the game
+        return {'quit_targeting': True}
+
+    return {}

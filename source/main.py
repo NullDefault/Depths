@@ -28,7 +28,7 @@ def main():
 
     display = pygame.display.set_mode(constants['screen_size'])
 
-    player, entities, game_map, game_state, console = get_game_variables(constants)
+    player, entities, crosshair, game_map, game_state, console = get_game_variables(constants)
 
     fov_recompute = True
     fov_map = initialize_fov(game_map)
@@ -36,6 +36,9 @@ def main():
     main_action_menu_active = False
     inventory_active = False
     character_profile_active = False
+    targeting_ui_active = False
+    targeting_item = None
+
     game_state = GameStates.PLAYERS_TURN
     next_game_state = None
 
@@ -90,20 +93,19 @@ def main():
                 except KeyError:
                     equip = None
                 try:
+                    targeting_item = inventory_selection
                     targeting = results['targeting']
+                    game_state = GameStates.TARGETING
+                    targeting_ui_active = True
                 except KeyError:
                     targeting = None
-
                 try:
                     consumed = results['consumed']
-
                     console.inventory_menu.decrement_cursor()
-
                     game_state = GameStates.ENEMY_TURN
                     next_game_state = GameStates.INVENTORY_MENU
                 except KeyError:
                     consumed = None
-
                 try:
                     message = results['message']
                     console.add_message(message)
@@ -114,7 +116,7 @@ def main():
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'],
                           constants['fov_light_walls'], constants['fov_algorithm'])
 
-        abstract_game_surface = get_render(entities, game_map, fov_map)
+        abstract_game_surface = get_render(entities, game_map, fov_map, targeting_ui_active)
         console_surface = console.render(main_action_menu_active, inventory_active, character_profile_active)
 
         display.blit(abstract_game_surface, (0, 0))  # Blit game
@@ -130,9 +132,30 @@ def main():
         wait = action.get('wait')
         menu_mode_changed = action.get('menu_mode_changed')
 
+        target_selected = action.get('target_selected')
+        quit_targeting = action.get('quit_targeting')
+
         player_turn_results = []
 
-        if move and game_state == GameStates.PLAYERS_TURN:
+        if move and game_state == GameStates.TARGETING:
+            dx, dy = move
+            destination_x = crosshair.x + dx
+            destination_y = crosshair.y + dy
+            if not game_map.is_blocked(destination_x, destination_y):
+                crosshair.move(dx, dy)
+
+            game_state = GameStates.PLAYERS_TURN
+            next_game_state = GameStates.TARGETING
+
+        elif target_selected and game_state == GameStates.TARGETING:
+            target = get_blocking_entities_at_location(entities, crosshair.x, crosshair.y)
+            targeting_item.item.use_function(target)
+
+        elif quit_targeting and game_state == GameStates.TARGETING:
+            game_state = GameStates.PLAYERS_TURN
+            next_game_state = None
+
+        elif move and game_state == GameStates.PLAYERS_TURN:
             dx, dy = move
             destination_x = player.x + dx
             destination_y = player.y + dy
@@ -145,7 +168,7 @@ def main():
                     player_turn_results.extend(attack_results)
                 else:
                     player.move(dx, dy)
-
+                    crosshair.crosshair.update_crosshair()
                     fov_recompute = True
 
                 game_state = GameStates.ENEMY_TURN
@@ -153,7 +176,8 @@ def main():
         elif take_stairs and game_state == GameStates.PLAYERS_TURN:
             for entity in entities:
                 if entity.stairs and entity.x == player.x and entity.y == player.y:
-                    entities = game_map.next_floor(player, console.message_log, constants)
+                    entities = game_map.next_floor(player, crosshair, console.message_log, constants)
+                    crosshair.crosshair.update_crosshair()
                     fov_map = initialize_fov(game_map)
                     fov_recompute = True
                     break
