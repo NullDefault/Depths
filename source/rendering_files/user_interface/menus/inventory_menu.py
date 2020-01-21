@@ -4,7 +4,7 @@ Function: UI Element for interacting with the players inventory
 Notes:
 '''
 
-from source.rendering_files.user_interface.inventory_handler import InventoryHandler
+from source.rendering_files.user_interface.input_handlers.inventory_handler import InventoryHandler
 from source.assets.texture_database import textures
 from pygame import font
 from os.path import join

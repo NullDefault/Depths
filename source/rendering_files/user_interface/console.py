@@ -5,8 +5,8 @@ Notes:
 '''
 
 from source.rendering_files.user_interface.game_messages import MessageRenderer, MessageLog
-from source.rendering_files.user_interface.action_menu import ActionMenu
-from source.rendering_files.user_interface.inventory_menu import InventoryMenu
+from source.rendering_files.user_interface.menus.action_menu import ActionMenu
+from source.rendering_files.user_interface.menus.inventory_menu import InventoryMenu
 from source.assets.texture_database import textures
 import tcod
 from pygame import Surface, draw, key, KEYDOWN

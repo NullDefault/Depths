@@ -4,7 +4,7 @@ Function: UI Element that allows the user to make a selection from a variety of 
 Notes:
 '''
 
-from source.rendering_files.user_interface.main_action_menu_handler import MainActionMenuHandler
+from source.rendering_files.user_interface.input_handlers.main_action_menu_handler import MainActionMenuHandler
 from source.assets.texture_database import textures
 from pygame import font
 from os.path import join

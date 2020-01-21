@@ -4,7 +4,7 @@ Function: Handles the logic behind the player interacting with the inventory
 Notes:
 '''
 
-from source.rendering_files.user_interface.input_handler import InputHandler
+from source.rendering_files.user_interface.input_handlers.input_handler import InputHandler
 
 
 class InventoryHandler(InputHandler):
