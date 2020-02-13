@@ -1,10 +1,11 @@
-'''
+"""
 Name: Input Functions
 Function: Handles the logic behind processing player inputs
 Notes:
-'''
+"""
 
 import pygame
+
 from source.data_banks.game_states import GameStates
 
 

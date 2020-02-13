@@ -1,17 +1,16 @@
-'''
+"""
 Name: Game States
 Function: Holds possible states the game loop can be in at a given moment
 Notes:
-'''
+"""
 
-from enum import Enum
+from enum import Enum, auto
 
 
 class GameStates(Enum):
-    PLAYERS_TURN = 1
-    ENEMY_TURN = 2
-    PLAYER_DEAD = 3
-    ACTION_MENU = 4
-    INVENTORY_MENU = 5
-    TARGETING = 6
-
+    PLAYERS_TURN = auto()
+    ENEMY_TURN = auto()
+    PLAYER_DEAD = auto()
+    ACTION_MENU = auto()
+    INVENTORY_MENU = auto()
+    TARGETING = auto()

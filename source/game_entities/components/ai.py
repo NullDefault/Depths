@@ -4,9 +4,11 @@ Function: Various AI's for controlling the behavior of npc's
 Notes:
 '''
 
-import tcod
-from source.rendering_files.user_interface.game_messages import Message
 from random import randint
+
+import tcod
+
+from source.rendering_files.user_interface.game_messages import Message
 
 
 # Default NPC AI
@@ -32,6 +34,7 @@ class ConfusedCreature:
         self.previous_ai = previous_ai
         self.number_of_turns = number_of_turns
 
+    # Note: Take Turn takes target and fov_map as parameters even though it doesn't use them - this is to avoid errors
     def take_turn(self, target, fov_map, game_map, entities):
         results = []
 

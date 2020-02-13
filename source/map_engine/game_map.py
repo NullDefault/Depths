@@ -1,31 +1,26 @@
-'''
+"""
 Name: Game Map
 Function: Holds data on the game map, functions to generate new maps and moving between floors
 Notes:
-'''
+"""
 
-import tcod
 from random import randint
 
+import tcod
+
+from source.data_banks.equipment_slots import EquipmentSlots
+from source.data_banks.item_functions import heal, cast_fireball, cast_confuse, cast_lightning
+from source.data_banks.render_order import RenderOrder
 from source.game_entities.components.ai import BasicCreature
 from source.game_entities.components.combat_data import CombatData
 from source.game_entities.components.equippable import Equippable
 from source.game_entities.components.item import Item
-from source.map_engine.map_rect import MapRect
-
-from source.rendering_files.user_interface.game_messages import Message
-
-from source.data_banks.equipment_slots import EquipmentSlots
-from source.data_banks.item_functions import heal, cast_fireball, cast_confuse, cast_lightning
-
-from source.map_engine.tile import Tile
-
-from source.data_banks.render_order import RenderOrder
-
-from source.misc_functions.random_utilities import from_dungeon_level, random_choice_from_dict
-
-from source.game_entities.structures.stairs import Stairs
 from source.game_entities.entity import Entity
+from source.game_entities.structures.stairs import Stairs
+from source.map_engine.map_rect import MapRect
+from source.map_engine.tile import Tile
+from source.misc_functions.random_utilities import from_dungeon_level, random_choice_from_dict
+from source.rendering_files.user_interface.game_messages import Message
 
 
 class GameMap:
@@ -124,8 +119,8 @@ class GameMap:
             'sword': from_dungeon_level([[5, 4]], self.dungeon_level),
             'shield': from_dungeon_level([[15, 8]], self.dungeon_level),
             'lightning_scroll': from_dungeon_level([[25, 4]], self.dungeon_level),
-            'fireball_scroll': 55, #from_dungeon_level([[25, 6]], self.dungeon_level),
-            'confusion_scroll': 55, #from_dungeon_level([[10, 2]], self.dungeon_level)
+            'fireball_scroll': 55,  # from_dungeon_level([[25, 6]], self.dungeon_level),
+            'confusion_scroll': 55,  # from_dungeon_level([[10, 2]], self.dungeon_level)
         }
 
         for i in range(number_of_monsters):

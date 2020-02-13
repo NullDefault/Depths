@@ -1,16 +1,14 @@
-'''
+"""
 Name: Death Functions
 Function: Collection of functions that handles entity death (through combat or else)
 Notes:
-'''
+"""
 
 import tcod
 
+from source.assets.texture_database import textures
 from source.data_banks.game_states import GameStates
 from source.data_banks.render_order import RenderOrder
-
-from source.assets.texture_database import textures
-
 from source.rendering_files.user_interface.game_messages import Message
 
 

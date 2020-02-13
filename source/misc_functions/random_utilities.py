@@ -1,8 +1,8 @@
-'''
+"""
 Name: Random Utilities
 Function: Collection of functions for a variety of functions generally speaking getting a random choice from a dict
 Notes:
-'''
+"""
 
 from random import randint
 

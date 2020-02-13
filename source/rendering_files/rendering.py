@@ -1,8 +1,8 @@
-'''
+"""
 Name: Rendering
 Function: Handles the logic for rendering game entities, effectively the graphical engine
 Notes:
-'''
+"""
 
 import tcod
 from pygame import Surface
@@ -12,7 +12,6 @@ from source.assets.texture_database import textures
 RENDER_SCALE = 16  # Corresponds to texture size
 
 black_bg = textures['black_bg']
-
 wall_visible = textures['wall_visible']
 wall_invisible = textures['wall_invisible']
 floor_visible = textures['floor_visible']
@@ -51,7 +50,7 @@ def get_render(entities, game_map, fov_map, targeting_ui_active):
     for entity in entities_in_render_order:
         x, y = entity.x, entity.y
         if entity.crosshair:
-            print (str(x) +'/'+ str(y))
+            print (str(x) + '/' + str(y))
             visible = targeting_ui_active
             if visible:
                 game_screen.blit(entity.image, (x * RENDER_SCALE, y * RENDER_SCALE))

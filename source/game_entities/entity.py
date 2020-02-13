@@ -1,18 +1,19 @@
-'''
+"""
 Name: Entity
 Function: One of the most important logic classes, holds data on a game entity and a variety of functions necessary
           for its usual behavior.
 Notes: x and y are the logical position of the entity on the tile board, rect.left and rect.top are how the entity
        actually gets rendered -> rect position is easily obtained by multiplying x,y by 16 (the size of the textures)
-'''
+"""
 
 import math
+
 import pygame
 import tcod
 
-from source.game_entities.components.item import Item
-from source.data_banks.render_order import RenderOrder
 from source.assets.texture_database import get_sprite
+from source.data_banks.render_order import RenderOrder
+from source.game_entities.components.item import Item
 
 
 def get_blocking_entities_at_location(entities, destination_x, destination_y):
@@ -150,7 +151,7 @@ class Entity(pygame.sprite.Sprite):
             # blocks a corridor) it will still try to move towards the player (closer to the corridor opening)
             self.move_towards(target.x, target.y, game_map, entities)
 
-            # Delete the path to free memory
+        # Delete the path to free memory
         tcod.path_delete(my_path)
 
     def distance(self, x, y):

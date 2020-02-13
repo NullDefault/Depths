@@ -1,8 +1,8 @@
-'''
+"""
 Name: Console
 Function: Contains functions necessary to render UI elements on the screen, including game messages, menu and stats
 Notes:
-'''
+"""
 
 from source.rendering_files.user_interface.game_messages import MessageRenderer, MessageLog
 from source.rendering_files.user_interface.menus.action_menu import ActionMenu

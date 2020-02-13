@@ -1,8 +1,8 @@
-'''
+"""
 Name: Level
 Function: Component that holds data on an entities experience and current level
 Notes:
-'''
+"""
 
 
 class Level:

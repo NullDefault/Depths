@@ -1,8 +1,8 @@
-'''
+"""
 Name: Item
 Function: Component that signifies an entity is an item
 Notes:
-'''
+"""
 
 
 class Item:

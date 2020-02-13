@@ -1,8 +1,8 @@
-'''
+"""
 Name: Equippable
 Function: Component that is attached onto an item to signify it can be equipped (and thus is equippable)
 Notes:
-'''
+"""
 
 
 class Equippable:

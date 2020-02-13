@@ -1,13 +1,14 @@
-'''
+"""
 Name: Game Messages
 Function: Classes that hold data and functions for managing game console messages
 Notes:
-'''
+"""
+
+from os.path import join
+from textwrap import wrap
 
 import tcod
-import textwrap
 from pygame import font
-from os.path import join
 
 
 class Message:
@@ -26,7 +27,7 @@ class MessageLog:
 
     def add_message(self, message):
         # Split the message if necessary, among multiple lines
-        new_msg_lines = textwrap.wrap(message.text, self.max_msg_len)
+        new_msg_lines = wrap(message.text, self.max_msg_len)
 
         for line in new_msg_lines:
             # If the buffer is full, remove the first line to make room for the new one

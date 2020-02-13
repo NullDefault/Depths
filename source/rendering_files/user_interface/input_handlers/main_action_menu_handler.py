@@ -1,8 +1,8 @@
-'''
+"""
 Name: Main Action Menu Handler
 Function: Handles the logic behind the player interacting with the main action menu
 Notes:
-'''
+"""
 
 from source.rendering_files.user_interface.input_handlers.input_handler import InputHandler
 
@@ -33,5 +33,3 @@ class MainActionMenuHandler(InputHandler):
             self.owner.cursor = 0
         elif self.owner.cursor == len(self.owner.actions) + 1:
             self.owner.cursor = 1
-
-

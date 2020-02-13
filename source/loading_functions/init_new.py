@@ -1,24 +1,21 @@
-'''
+"""
 Name: Initialize New
 Function: Generates a new game state, used for creating new floors and new games
 Notes:
-'''
-
-from source.game_entities.entity import Entity
-from source.rendering_files.user_interface.console import Console
+"""
 
 from source.data_banks.equipment_slots import EquipmentSlots
-from source.data_banks.render_order import RenderOrder
 from source.data_banks.game_states import GameStates
-
-from source.map_engine.game_map import GameMap
-
+from source.data_banks.render_order import RenderOrder
 from source.game_entities.components.combat_data import CombatData
-from source.game_entities.components.equippable import Equippable
+from source.game_entities.components.crosshair import Crosshair
 from source.game_entities.components.equipment import Equipment
+from source.game_entities.components.equippable import Equippable
 from source.game_entities.components.inventory import Inventory
 from source.game_entities.components.level import Level
-from source.game_entities.components.crosshair import Crosshair
+from source.game_entities.entity import Entity
+from source.map_engine.game_map import GameMap
+from source.rendering_files.user_interface.console import Console
 
 
 def get_constants():

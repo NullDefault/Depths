@@ -1,8 +1,8 @@
-'''
+"""
 Name: Input Handler
 Function: Super class for all menu input handlers
 Notes:
-'''
+"""
 
 
 class InputHandler:

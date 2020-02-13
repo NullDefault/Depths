@@ -1,24 +1,19 @@
-'''
+"""
 Name: Main
 Function: Controls the game loop, entering point for the code, classic main stuff (no String[] args tho)
 Notes:
-'''
+"""
 
-import tcod
 import pygame
-
-from source.game_entities.entity import get_blocking_entities_at_location
-
-from source.loading_functions.init_new import get_constants, get_game_variables
-
-from source.rendering_files.user_interface.input_handlers.input_functions import process_event
-from source.rendering_files.user_interface.game_messages import Message
-
-from source.rendering_files.rendering import recompute_fov, initialize_fov, get_render
-
-from source.misc_functions.death_functions import kill_monster, kill_player
+import tcod
 
 from source.data_banks.game_states import GameStates
+from source.game_entities.entity import get_blocking_entities_at_location
+from source.loading_functions.init_new import get_constants, get_game_variables
+from source.misc_functions.death_functions import kill_monster, kill_player
+from source.rendering_files.rendering import recompute_fov, initialize_fov, get_render
+from source.rendering_files.user_interface.game_messages import Message
+from source.rendering_files.user_interface.input_handlers.input_functions import process_event
 
 
 def main():
@@ -265,7 +260,6 @@ def main():
                         break
             else:
                 game_state = GameStates.PLAYERS_TURN
-
 
 
 if __name__ == '__main__':

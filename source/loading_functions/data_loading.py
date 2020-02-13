@@ -1,5 +1,11 @@
-import shelve
+"""
+Name: Data Loading
+Function: Variety of functions necessary to save and load game data
+Notes:
+"""
+
 import os
+import shelve
 
 
 def save_game(player, entities, game_map, message_log, game_state):

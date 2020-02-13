@@ -1,12 +1,13 @@
-'''
+"""
 Name: Equipment
 Function: Components that holds data about items an entity is "using" such as a sword, shield or something like that
 Notes:
-'''
+"""
+
+import tcod
 
 from source.data_banks.equipment_slots import EquipmentSlots
 from source.rendering_files.user_interface.game_messages import Message
-import tcod
 
 
 class Equipment:
@@ -65,6 +66,7 @@ class Equipment:
 
                 self.main_hand = equippable_entity
                 results.append(Message(('Equipped ' + equippable_entity.name), tcod.lighter_blue))
+
         elif slot == EquipmentSlots.OFF_HAND:
             if self.off_hand == equippable_entity:
                 self.off_hand = None

@@ -1,15 +1,15 @@
-'''
+"""
 Name: Render Order
 Function: Holds data on the priority in which entities get rendered during gameplay (higher val = higher priority)
 Notes:
-'''
+"""
 
-from enum import Enum
+from enum import Enum, auto
 
 
 class RenderOrder(Enum):
-    STAIRS = 1
-    CORPSE = 2
-    ITEM = 3
-    ACTOR = 4
-    CROSSHAIR = 5
+    STAIRS = auto()
+    CORPSE = auto()
+    ITEM = auto()
+    ACTOR = auto()
+    CROSSHAIR = auto()

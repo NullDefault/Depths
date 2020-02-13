@@ -1,8 +1,8 @@
-'''
+"""
 Name: Item Functions
 Function: Holds functions representing the functionality of various items
 Notes:
-'''
+"""
 
 import tcod
 
@@ -10,10 +10,7 @@ from source.game_entities.components.ai import ConfusedCreature
 from source.rendering_files.user_interface.game_messages import Message
 
 
-def heal(*args, **kwargs):
-    entity = args[0]
-    amount = kwargs.get('amount')
-
+def heal(entity, amount):
     results = []
 
     if entity.combat_data.hp == entity.combat_data.max_hp:
@@ -25,13 +22,7 @@ def heal(*args, **kwargs):
     return results
 
 
-def cast_lightning(*args, **kwargs):
-    caster = args[0]
-    entities = kwargs.get('entities')
-    fov_map = kwargs.get('fov_map')
-    damage = kwargs.get('damage')
-    maximum_range = kwargs.get('maximum_range')
-
+def cast_lightning(caster, entities, fov_map, damage, maximum_range):
     results = []
 
     target = None
@@ -53,18 +44,14 @@ def cast_lightning(*args, **kwargs):
         results.extend(target.combat_data.take_damage(damage))
     else:
         results.append({'consumed': False, 'target': None, 'message':
-            Message('No enemy is close enough to strike.', tcod.red)})
+                        Message('No enemy is close enough to strike.', tcod.red)})
 
     return results
 
 
-def cast_fireball(*args, **kwargs):
-    entities = kwargs.get('entities')
-    fov_map = kwargs.get('fov_map')
-    damage = kwargs.get('damage')
-    radius = kwargs.get('radius')
-    target_x = kwargs.get('target_x')
-    target_y = kwargs.get('target_y')
+def cast_fireball(entities, fov_map, damage, radius, target):
+    target_x = target[0]
+    target_y = target[1]
 
     results = []
 
@@ -86,11 +73,9 @@ def cast_fireball(*args, **kwargs):
     return results
 
 
-def cast_confuse(*args, **kwargs):
-    entities = kwargs.get('entities')
-    fov_map = kwargs.get('fov_map')
-    target_x = kwargs.get('target_x')
-    target_y = kwargs.get('target_y')
+def cast_confuse(entities, fov_map, target):
+    target_x = target[0]
+    target_y = target[1]
 
     results = []
 

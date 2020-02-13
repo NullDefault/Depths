@@ -1,8 +1,8 @@
-'''
+"""
 Name: Stairs
 Function: Structure needed for moving between floors.
 Notes:
-'''
+"""
 
 
 class Stairs:

@@ -1,8 +1,8 @@
-'''
+"""
 Name: Crosshair
 Function: Entity used for taking inputs when using targeting items
 Notes:
-'''
+"""
 
 
 class Crosshair:
@@ -10,6 +10,5 @@ class Crosshair:
         self.player = player
 
     def update_crosshair(self):
-        print(self.owner)
         self.owner.x = self.player.x
         self.owner.y = self.player.y
