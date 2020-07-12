@@ -70,7 +70,7 @@ def main():
 
         elif game_state == GameStates.INVENTORY_MENU:
             inventory_selection = console.handle_inventory_input(e)
-            if inventory_selection is 'quit_menu':
+            if inventory_selection == 'quit_menu':
                 inventory_active = False
                 game_state = GameStates.ACTION_MENU
             elif inventory_selection:

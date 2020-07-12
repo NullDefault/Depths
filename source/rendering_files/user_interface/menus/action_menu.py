@@ -17,7 +17,7 @@ cursor = textures['menu_cursor']
 class ActionMenu:
     def __init__(self, size, actions):
         font.init()
-        self.font = font.Font(join('assets', 'fonts', '3Dventure.ttf'), 32)
+        self.font = font.Font(join('source', 'assets', 'fonts', '3Dventure.ttf'), 32)
         self.size = size  # size of the menu in pixels
         self.actions = actions  # Dictionary with all the possible actions. Key is the index, value is the action.
         self.frame = textures['main_action_menu_frame']

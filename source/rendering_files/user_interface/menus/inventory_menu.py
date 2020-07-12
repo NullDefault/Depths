@@ -20,7 +20,7 @@ off_hand_icon = textures['off_hand_icon']
 class InventoryMenu:
     def __init__(self, inventory, size):
         font.init()
-        self.font = font.Font(join('assets', 'fonts', 'gameFont.ttf'), 24)
+        self.font = font.Font(join('source', 'assets', 'fonts', 'gameFont.ttf'), 24)
         self.inventory = inventory
         self.size = size  # size of the menu in pixels
         self.frame = textures['inventory_menu_frame']

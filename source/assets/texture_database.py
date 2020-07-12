@@ -5,62 +5,70 @@ Notes:
 '''
 
 from os.path import join
-from pygame import image
+from pygame import image, display
+
+display = display.set_mode()
+
+
+def load_img(path):
+    path = join('source', 'assets', path)
+    return image.load(path).convert_alpha()
+
 
 textures = {
     # PLAYER GRAPHICS
-    'player': image.load(join('assets', 'player.png')),
+    'player': load_img('player.png'),
 
 
     # STRUCTURES
-    'wall_visible': image.load(join('assets', 'structures', 'walls', 'wall_visible.png')),
-    'wall_invisible': image.load(join('assets', 'structures', 'walls', 'wall_invisible.png')),
-    'floor_visible': image.load(join('assets', 'structures', 'floors', 'floor_visible.png')),
-    'floor_invisible': image.load(join('assets', 'structures', 'floors', 'floor_invisible.png')),
-    'stairs_down': image.load(join('assets', 'structures', 'stairs_down.png')),
+    'wall_visible': load_img(join('structures', 'walls', 'wall_visible.png')),
+    'wall_invisible': load_img(join('structures', 'walls', 'wall_invisible.png')),
+    'floor_visible': load_img(join('structures', 'floors', 'floor_visible.png')),
+    'floor_invisible': load_img(join('structures', 'floors', 'floor_invisible.png')),
+    'stairs_down': load_img(join('structures', 'stairs_down.png')),
 
     # WEAPONS
-    'dagger': image.load(join('assets', 'items', 'weapons', 'dagger.png')),
-    'sword': image.load(join('assets', 'items', 'weapons', 'sword.png')),
-    'shield': image.load(join('assets', 'items', 'weapons', 'shield.png')),
+    'dagger': load_img(join('items', 'weapons', 'dagger.png')),
+    'sword': load_img(join('items', 'weapons', 'sword.png')),
+    'shield': load_img(join('items', 'weapons', 'shield.png')),
 
     # ITEMS
-    'potion': image.load(join('assets', 'items', 'potion.png')),
-    'scroll': image.load(join('assets', 'items', 'scroll.png')),
+    'potion': load_img(join('items', 'potion.png')),
+    'scroll': load_img(join('items', 'scroll.png')),
 
     # ENEMIES
-    'orc': image.load(join('assets', 'enemies', 'orc.png')),
-    'troll': image.load(join('assets', 'enemies', 'troll.png')),
+    'orc': load_img(join('enemies', 'orc.png')),
+    'troll': load_img(join('enemies', 'troll.png')),
 
     # MISC
-    'corpse': image.load(join('assets', 'misc', 'corpse.png')),
+    'corpse': load_img(join('misc', 'corpse.png')),
 
     # BACKGROUNDS
-    'black_bg': image.load(join('assets', 'ui_elements', 'backgrounds', 'black_bg.png')),
-    'background': image.load(join('assets', 'ui_elements', 'backgrounds', 'background.png')),
-    'inventory_black_bg': image.load(join('assets', 'ui_elements', 'backgrounds', 'inventory_black_bg.png')),
+    'black_bg': load_img(join('ui_elements', 'backgrounds', 'black_bg.png')),
+    'background': load_img(join('ui_elements', 'backgrounds', 'background.png')),
+    'inventory_black_bg': load_img(join('ui_elements', 'backgrounds', 'inventory_black_bg.png')),
 
     # UI FRAMES
-    'console_frame': image.load(join('assets', 'ui_elements', 'ui_frames', 'console_frame.png')),
-    'main_action_menu_frame': image.load(join('assets', 'ui_elements', 'ui_frames', 'action_menu_frame.png')),
-    'inventory_menu_frame': image.load(join('assets', 'ui_elements', 'ui_frames', 'inventory_menu_frame.png')),
+    'console_frame': load_img(join('ui_elements', 'ui_frames', 'console_frame.png')),
+    'main_action_menu_frame': load_img(join('ui_elements', 'ui_frames', 'action_menu_frame.png')),
+    'inventory_menu_frame': load_img(join('ui_elements', 'ui_frames', 'inventory_menu_frame.png')),
 
     # UI ICONS
-    'menu_cursor': image.load(join('assets', 'ui_elements', 'icons', 'menu_cursor.png')),
-    'inventory_cursor': image.load(join('assets', 'ui_elements', 'icons', 'inventory_cursor.png')),
+    'menu_cursor': load_img(join('ui_elements', 'icons', 'menu_cursor.png')),
+    'inventory_cursor': load_img(join('ui_elements', 'icons', 'inventory_cursor.png')),
 
-    'crosshair': image.load(join('assets', 'ui_elements', 'icons', 'crosshair.png')),
+    'crosshair': load_img(join('ui_elements', 'icons', 'crosshair.png')),
 
-    'off_hand_icon': image.load(join('assets', 'ui_elements', 'icons', 'off_hand_icon.png')),
-    'main_hand_icon': image.load(join('assets', 'ui_elements', 'icons', 'main_hand_icon.png')),
+    'off_hand_icon': load_img(join('ui_elements', 'icons', 'off_hand_icon.png')),
+    'main_hand_icon': load_img(join('ui_elements', 'icons', 'main_hand_icon.png')),
 
-    'xp_bar': image.load(join('assets', 'ui_elements', 'icons', 'xp_bar.png')),
-    'xp_ui': image.load(join('assets', 'ui_elements', 'icons', 'xp_ui.png')),
-    'hp_ui': image.load(join('assets', 'ui_elements', 'icons', 'hp_ui.png')),
+    'xp_bar': load_img(join('ui_elements', 'icons', 'xp_bar.png')),
+    'xp_ui': load_img(join('ui_elements', 'icons', 'xp_ui.png')),
+    'hp_ui': load_img(join('ui_elements', 'icons', 'hp_ui.png')),
 
-    'heart_full': image.load(join('assets', 'ui_elements', 'icons', 'heart_full.png')),
-    'heart_half': image.load(join('assets', 'ui_elements', 'icons', 'heart_half.png')),
-    'heart_empty': image.load(join('assets', 'ui_elements', 'icons', 'heart_empty.png'))
+    'heart_full': load_img(join('ui_elements', 'icons', 'heart_full.png')),
+    'heart_half': load_img(join('ui_elements', 'icons', 'heart_half.png')),
+    'heart_empty': load_img(join('ui_elements', 'icons', 'heart_empty.png'))
 }
 
 

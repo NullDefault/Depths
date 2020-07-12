@@ -42,7 +42,7 @@ class MessageRenderer:
     def __init__(self, font_size, message_log):
         self.log = message_log
         font.init()
-        self.font = font.Font(join('assets', 'fonts', 'gameFont.ttf'), font_size)
+        self.font = font.Font(join('source', 'assets', 'fonts', 'gameFont.ttf'), font_size)
 
     def write_to_console(self, surface):
         i = 0
