@@ -1,4 +1,5 @@
 # Depths
+<img src="https://img.shields.io/badge/python%20-%2314354C.svg?&style=for-the-badge&logo=python&logoColor=white"/></br>
 Roguelike game written in Python with the use of the pygame and libtcod libraries.
 ## Table of Contents
 * [General info](#general-info)
